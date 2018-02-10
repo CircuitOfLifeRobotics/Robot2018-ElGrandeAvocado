@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends IterativeRobot{
-	public static boolean PRACTICE_BOT = true;
 	DriveManual drive;
 	
 	@Override
