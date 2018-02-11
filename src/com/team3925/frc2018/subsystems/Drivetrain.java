@@ -25,6 +25,9 @@ public class Drivetrain extends Subsystem {
 	}
 
 	private Drivetrain() {
+		leftMaster.setInverted(true);
+		RobotMap.DrivetrainMap.LEFT_SLAVE_A.setInverted(true);
+		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setInverted(true);
 	}
 
 	public void setRaw(double l, double r) {

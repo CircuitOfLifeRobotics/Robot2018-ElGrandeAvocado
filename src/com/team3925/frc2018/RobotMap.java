@@ -11,13 +11,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class RobotMap {
 	
 	public static final class DrivetrainMap{
-		public static final WPI_TalonSRX LEFT_MASTER = CTREControllerFactory.createDefaultTalon(1);
-		public static final WPI_TalonSRX LEFT_SLAVE_A = CTREControllerFactory.createPermanentSlaveTalon(2, LEFT_MASTER);
-		public static final WPI_TalonSRX LEFT_SLAVE_B = CTREControllerFactory.createPermanentSlaveTalon(3, LEFT_MASTER);
+		public static final WPI_TalonSRX LEFT_MASTER = CTREControllerFactory.createDefaultTalon(4);
+		public static final WPI_TalonSRX LEFT_SLAVE_A = CTREControllerFactory.createPermanentSlaveTalon(5, LEFT_MASTER);
+		public static final WPI_TalonSRX LEFT_SLAVE_B = CTREControllerFactory.createPermanentSlaveTalon(6, LEFT_MASTER);
 		
-		public static final WPI_TalonSRX RIGHT_MASTER = CTREControllerFactory.createDefaultTalon(4);
-		public static final WPI_TalonSRX RIGHT_SLAVE_A = CTREControllerFactory.createPermanentSlaveTalon(5, RIGHT_MASTER);
-		public static final WPI_TalonSRX RIGHT_SLAVE_B = CTREControllerFactory.createPermanentSlaveTalon(6, RIGHT_MASTER);
+		public static final WPI_TalonSRX RIGHT_MASTER = CTREControllerFactory.createDefaultTalon(1);
+		public static final WPI_TalonSRX RIGHT_SLAVE_A = CTREControllerFactory.createPermanentSlaveTalon(2, RIGHT_MASTER);
+		public static final WPI_TalonSRX RIGHT_SLAVE_B = CTREControllerFactory.createPermanentSlaveTalon(3, RIGHT_MASTER);
 		
 		public static final DoubleSolenoid SHIFT_SOLENOID = new DoubleSolenoid(0, 1);
 	}
