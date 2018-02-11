@@ -1,6 +1,7 @@
 package com.team3925.frc2018.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team3925.frc2018.RobotMap;
 
@@ -25,9 +26,12 @@ public class Drivetrain extends Subsystem {
 	}
 
 	private Drivetrain() {
-		leftMaster.setInverted(true);
+		RobotMap.DrivetrainMap.LEFT_MASTER.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_A.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setInverted(true);
+		
+		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 	}
 
 	public void setRaw(double l, double r) {
