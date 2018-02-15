@@ -37,8 +37,7 @@ public class Elevator extends Subsystem {
 	public void setRaw(double speed) {
 		elevatorMaster.set(ControlMode.PercentOutput, speed);
 	}
-	
-	public void setPosition(double revolutions) {
+	private void setPosition(double revolutions) {
 		elevatorMaster.set(ControlMode.MotionMagic, (revolutions * ENC_TICKS_PER_REV));
 	}
 	
