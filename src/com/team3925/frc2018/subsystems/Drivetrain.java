@@ -18,6 +18,7 @@ public class Drivetrain extends Subsystem {
 	private final DoubleSolenoid shiftSolenoid = RobotMap.DrivetrainMap.SHIFT_SOLENOID;
 
 	public static Drivetrain instance;
+	private static boolean shiftState = true;
 
 	public static Drivetrain getInstance() {
 		if (instance == null)
@@ -41,6 +42,11 @@ public class Drivetrain extends Subsystem {
 
 	public void setShifter(boolean isHigh) {
 		shiftSolenoid.set((isHigh) ? Value.kForward : Value.kReverse);
+		shiftState = isHigh;
+	}
+	
+	public boolean getShiftState() {
+		return shiftState;
 	}
 
 	@Deprecated

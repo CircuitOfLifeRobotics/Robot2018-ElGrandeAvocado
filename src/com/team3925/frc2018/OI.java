@@ -4,6 +4,8 @@ import com.team3925.frc2018.commands.OpenGrabbers;
 import com.team3925.frc2018.commands.ReverseIntakeWheels;
 import com.team3925.frc2018.commands.RunIntakeWheels;
 import com.team3925.frc2018.commands.RunLift;
+import com.team3925.frc2018.commands.ShiftHigh;
+import com.team3925.frc2018.commands.ShiftLow;
 import com.team3925.frc2018.commands.DriveManual.DriveManualInput;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -22,6 +24,7 @@ public class OI implements DriveManualInput{
 	private Button suck;
 	private Button lift;
 	private Button shoot;
+	private Button shift;
 	
 	public static OI getInstance() {
 		if (instance == null)
@@ -39,10 +42,15 @@ public class OI implements DriveManualInput{
 		lift = new JoystickButton(xbox, 3);
 		shoot = new JoystickButton(xbox, 4);
 		
+		
+		shift = new JoystickButton(wheel, 5);
+		
 		shoot.whileHeld(new ReverseIntakeWheels());
 		lift.whileHeld(new RunLift());
 		suck.whileHeld(new RunIntakeWheels());
 		grab.whileHeld(new OpenGrabbers());
+		shift.whileHeld(new ShiftLow());
+		shift.whenInactive(new ShiftHigh());
 	}
 	
 	@Override
