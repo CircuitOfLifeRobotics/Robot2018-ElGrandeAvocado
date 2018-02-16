@@ -16,12 +16,12 @@ public class JacisTesting extends Command {
 		});
 		
 		command.start();
-		System.out.println("TEST");
+		System.out.println("I started");
 	}
 	
 	@Override
 	protected void execute() {
-		System.out.println("Im Running");
+		System.out.println("I Running");
 	}
 
 	@Override

@@ -21,6 +21,12 @@ public class Drivetrain extends Subsystem {
 
 	public static Drivetrain instance;
 	private static boolean shiftState = true;
+	private static final boolean isGyroInverted = true;
+
+	private static final double kP = 0.1;
+	private static final double kI = 0;
+	private static final double kD = 0;
+	private static final double kF = 0.9;
 
 	public static Drivetrain getInstance() {
 		if (instance == null)
@@ -36,6 +42,16 @@ public class Drivetrain extends Subsystem {
 		leftMaster.setSensorPhase(true);
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		
+		leftMaster.config_kF(Constants.pidIDx, kF, Constants.timeoutMs);
+		leftMaster.config_kP(Constants.pidIDx, kP, Constants.timeoutMs);
+		leftMaster.config_kI(Constants.pidIDx, kI, Constants.timeoutMs);
+		leftMaster.config_kD(Constants.pidIDx, kD, Constants.timeoutMs);
+		
+		rightMaster.config_kF(Constants.pidIDx, kF, Constants.timeoutMs);
+		rightMaster.config_kP(Constants.pidIDx, kP, Constants.timeoutMs);
+		rightMaster.config_kI(Constants.pidIDx, kI, Constants.timeoutMs);
+		rightMaster.config_kD(Constants.pidIDx, kD, Constants.timeoutMs);
 	}
 
 	public void setRaw(double l, double r) {
@@ -84,9 +100,9 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getGyroHeading() {
-		return -RobotMap.DrivetrainMap.DRIVETRAIN_IMU.getFusedHeading();
+		return ((isGyroInverted) ? -1 : 1 ) * RobotMap.DrivetrainMap.DRIVETRAIN_IMU.getFusedHeading();
 	}
-
+	
 	@Override
 	protected void initDefaultCommand() {
 	}

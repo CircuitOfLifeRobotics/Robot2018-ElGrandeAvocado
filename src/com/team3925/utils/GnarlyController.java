@@ -114,7 +114,7 @@ public class GnarlyController {
 	 * @return The desired output for your motor controller
 	 */
 
-	public double calculate(int encoder_tick, double gyro_heading, double encoder_vel_rpm) {
+	public double calculate(int encoder_tick, double gyro_heading, double encoder_vel_tpr) {
 		// Number of Revolutions * Wheel Circumference
 
 		if (last_time == 0) {
@@ -126,7 +126,7 @@ public class GnarlyController {
 			Trajectory.Segment seg = trajectory.get(segment);
 
 			double distance_covered = ((encoder_tick - encoder_offset) / encoder_tick_count) * wheel_circumference;
-			double enc_vel = encoder_vel_rpm / 60 * wheel_circumference;
+			double enc_vel = encoder_vel_tpr / encoder_tick_count * wheel_circumference * 10;
 
 			double positionError = seg.position - distance_covered;
 			double velocityError = seg.velocity - enc_vel;
@@ -136,7 +136,7 @@ public class GnarlyController {
 			// Loop is Velocity_Set_Point + Gyro_Error + Position_Error + Velocity_Error
 			double calculated_value = seg.velocity + (leftSide ? 1.0 : -1.0) * kg * headingError + kp * positionError + kv * velocityError;
 			// Convert Ft/S to RPM
-			double converted_value = calculated_value * 60 / wheel_circumference;
+			double converted_value = calculated_value / 10 / wheel_circumference * encoder_tick_count;
 
 			//LOG
 			position_log[0] = seg.position;
