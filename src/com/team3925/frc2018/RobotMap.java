@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team3925.utils.CTREControllerFactory;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -18,6 +19,8 @@ public class RobotMap {
 		public static final WPI_TalonSRX RIGHT_MASTER = CTREControllerFactory.createDefaultTalon(1);
 		public static final WPI_TalonSRX RIGHT_SLAVE_A = CTREControllerFactory.createPermanentSlaveTalon(2, RIGHT_MASTER);
 		public static final WPI_VictorSPX RIGHT_SLAVE_B = CTREControllerFactory.createPermanentSlaveVictor(3, RIGHT_MASTER);
+		
+		public static final PigeonIMU DRIVETRAIN_IMU = new PigeonIMU(LEFT_SLAVE_A);
 		
 		public static final DoubleSolenoid SHIFT_SOLENOID = new DoubleSolenoid(0, 1);
 	}

@@ -3,6 +3,8 @@ package com.team3925.frc2018.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -30,7 +32,8 @@ public class Drivetrain extends Subsystem {
 		RobotMap.DrivetrainMap.LEFT_MASTER.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_A.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setInverted(true);
-		
+
+		leftMaster.setSensorPhase(true);
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 	}
@@ -44,7 +47,7 @@ public class Drivetrain extends Subsystem {
 		shiftSolenoid.set((isHigh) ? Value.kForward : Value.kReverse);
 		shiftState = isHigh;
 	}
-	
+
 	public boolean getShiftState() {
 		return shiftState;
 	}
@@ -57,6 +60,31 @@ public class Drivetrain extends Subsystem {
 	@Deprecated
 	public TalonSRX getRightMaster() {
 		return rightMaster;
+	}
+
+	public double getLeftEncoderPosition() {
+		return leftMaster.getSelectedSensorPosition(Constants.pidIDx);
+	}
+
+	public double getRightEncoderPosition() {
+		return rightMaster.getSelectedSensorPosition(Constants.pidIDx);
+	}
+
+	public double getLeftSpeed() {
+		return leftMaster.getSelectedSensorVelocity(Constants.pidIDx);
+	}
+
+	public double getRightSpeed() {
+		return rightMaster.getSelectedSensorVelocity(Constants.pidIDx);
+	}
+
+	public void setVelocity(double l, double r) {
+		leftMaster.set(ControlMode.Velocity, l);
+		rightMaster.set(ControlMode.Velocity, r);
+	}
+
+	public double getGyroHeading() {
+		return -RobotMap.DrivetrainMap.DRIVETRAIN_IMU.getFusedHeading();
 	}
 
 	@Override
