@@ -1,6 +1,7 @@
 package com.team3925.utils;
 
 import edu.wpi.first.wpilibj.Timer;
+import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 
 public class GnarlyController {
@@ -131,18 +132,18 @@ public class GnarlyController {
 			double positionError = seg.position - distance_covered;
 			double velocityError = seg.velocity - enc_vel;
 			// Clockwise creates a negative heading
-			double headingError = seg.heading - (gyro_heading - gyro_offset);
+			double headingError = Pathfinder.r2d(seg.heading) - Pathfinder.boundHalfDegrees(gyro_heading - gyro_offset);
 
 			// Loop is Velocity_Set_Point + Gyro_Error + Position_Error + Velocity_Error
-			double calculated_value = seg.velocity + (leftSide ? 1.0 : -1.0) * kg * headingError + kp * positionError + kv * velocityError;
+			double calculated_value = seg.velocity + seg.acceleration * ka + (leftSide ? -1.0 : 1.0) * kg * headingError + kp * positionError + kv * velocityError;
 			// Convert Ft/S to RPM
 			double converted_value = calculated_value / 10 / wheel_circumference * encoder_tick_count;
 
 			//LOG
 			position_log[0] = seg.position;
 			position_log[1] = distance_covered;
-			angle_log[0] = seg.heading;
-			angle_log[1] = gyro_heading;
+			angle_log[0] = Pathfinder.r2d(seg.heading);
+			angle_log[1] = Pathfinder.boundHalfDegrees(gyro_heading - gyro_offset);
 			velocity_log[0] = seg.velocity;
 			velocity_log[1] = enc_vel;
 			

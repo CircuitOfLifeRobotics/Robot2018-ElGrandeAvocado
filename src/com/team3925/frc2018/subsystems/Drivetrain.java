@@ -21,7 +21,7 @@ public class Drivetrain extends Subsystem {
 
 	public static Drivetrain instance;
 	private static boolean shiftState = true;
-	private static final boolean isGyroInverted = true;
+	private static final boolean isGyroInverted = false;
 
 	private static final double kP = 0.1;
 	private static final double kI = 0;
@@ -83,7 +83,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getRightEncoderPosition() {
-		return rightMaster.getSelectedSensorPosition(Constants.pidIDx);
+		return -rightMaster.getSelectedSensorPosition(Constants.pidIDx);
 	}
 
 	public double getLeftSpeed() {
@@ -91,7 +91,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getRightSpeed() {
-		return rightMaster.getSelectedSensorVelocity(Constants.pidIDx);
+		return -rightMaster.getSelectedSensorVelocity(Constants.pidIDx);
 	}
 
 	public void setVelocity(double l, double r) {

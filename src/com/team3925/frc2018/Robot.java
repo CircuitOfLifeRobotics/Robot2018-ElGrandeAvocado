@@ -14,22 +14,15 @@ import jaci.pathfinder.Waypoint;
 public class Robot extends IterativeRobot {
 	DriveManual drive;
 	MotionProfileCommand test;
-	PowerDistributionPanel pdp;
 
 	@Override
 	public void robotInit() {
-		pdp = new PowerDistributionPanel();
 		drive = new DriveManual(OI.getInstance());
-		test = new MotionProfileCommand((new Waypoint[] {
-				new Waypoint(-5, 0, 0),
-				new Waypoint(0, 0, 0),
-		}));
+		test = new MotionProfileCommand("testAuto");
 	}
 
-	@Override
 	public void teleopInit() {
 		drive.start();
-		Drivetrain.getInstance().getLeftMaster().setSelectedSensorPosition(0, 0, 0);
 	}
 
 	@Override
@@ -40,13 +33,15 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		System.out.println(Drivetrain.getInstance().getLeftSpeed());
-		SmartDashboard.putNumber("Velocity Left" , Drivetrain.getInstance().getLeftSpeed());
+	}
+
+	@Override
+	public void robotPeriodic() {
+
 	}
 
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		System.out.println(Drivetrain.getInstance().getLeftEncoderPosition() / 1024 * (Math.PI * 0.5));
 	}
 }
