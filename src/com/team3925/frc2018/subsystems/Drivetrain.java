@@ -6,12 +6,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
+import com.team3925.utils.PIDTunable;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends Subsystem implements PIDTunable {
 
 	private final TalonSRX leftMaster = RobotMap.DrivetrainMap.LEFT_MASTER;
 
@@ -23,11 +24,10 @@ public class Drivetrain extends Subsystem {
 	private static boolean shiftState = true;
 	private static final boolean isGyroInverted = false;
 
-	private static final double kP = 0.2;
-	private static final double kI = 0;
-	private static final double kD = 0;
-	private static final double kF = 0.9;
-	
+	private double kP = 0.2;
+	private double kI = 0;
+	private double kD = 0;
+	private double kF = 0.9;
 
 	public static Drivetrain getInstance() {
 		if (instance == null)
@@ -43,12 +43,12 @@ public class Drivetrain extends Subsystem {
 		leftMaster.setSensorPhase(true);
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-		
+
 		leftMaster.config_kF(Constants.pidIDx, kF, Constants.timeoutMs);
 		leftMaster.config_kP(Constants.pidIDx, kP, Constants.timeoutMs);
 		leftMaster.config_kI(Constants.pidIDx, kI, Constants.timeoutMs);
 		leftMaster.config_kD(Constants.pidIDx, kD, Constants.timeoutMs);
-		
+
 		rightMaster.config_kF(Constants.pidIDx, kF, Constants.timeoutMs);
 		rightMaster.config_kP(Constants.pidIDx, kP, Constants.timeoutMs);
 		rightMaster.config_kI(Constants.pidIDx, kI, Constants.timeoutMs);
@@ -78,11 +78,11 @@ public class Drivetrain extends Subsystem {
 	public TalonSRX getRightMaster() {
 		return rightMaster;
 	}
-	
+
 	public void zero() {
 		leftMaster.setSelectedSensorPosition(0, Constants.pidIDx, Constants.timeoutMs);
 		rightMaster.setSelectedSensorPosition(0, Constants.pidIDx, Constants.timeoutMs);
-		
+
 	}
 
 	public double getLeftEncoderPosition() {
@@ -107,11 +107,50 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getGyroHeading() {
-		return ((isGyroInverted) ? -1 : 1 ) * RobotMap.DrivetrainMap.DRIVETRAIN_IMU.getFusedHeading();
+		return ((isGyroInverted) ? -1 : 1) * RobotMap.DrivetrainMap.DRIVETRAIN_IMU.getFusedHeading();
 	}
-	
+
 	@Override
 	protected void initDefaultCommand() {
 	}
 
+	@Override
+	public double getkP() {
+		return kP;
+	}
+
+	@Override
+	public void setkP(double kP) {
+		this.kP = kP;
+	}
+
+	@Override
+	public double getkI() {
+		return kI;
+	}
+
+	@Override
+	public void setkI(double kI) {
+		this.kI = kI;
+	}
+
+	@Override
+	public double getkD() {
+		return kD;
+	}
+
+	@Override
+	public void setkD(double kD) {
+		this.kD = kD;
+	}
+
+	@Override
+	public double getkF() {
+		return kF;
+	}
+
+	@Override
+	public void setkF(double kF) {
+		this.kF = kF;
+	}
 }
