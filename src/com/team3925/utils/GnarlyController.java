@@ -142,7 +142,7 @@ public class GnarlyController {
 			//LOG
 			position_log[0] = seg.position;
 			position_log[1] = distance_covered;
-			angle_log[0] = Pathfinder.r2d(seg.heading);
+			angle_log[0] = Pathfinder.boundHalfDegrees(Pathfinder.r2d(seg.heading));
 			angle_log[1] = Pathfinder.boundHalfDegrees(gyro_heading - gyro_offset);
 			velocity_log[0] = seg.velocity;
 			velocity_log[1] = enc_vel;
