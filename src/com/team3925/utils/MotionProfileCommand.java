@@ -28,10 +28,10 @@ public class MotionProfileCommand extends Command {
 	Waypoint[] points;
 
 	// TUNE THESE VALUES
-	public static double kP = 0; // 0.5
-	public static double kV = 0;
-	public static double kA = 0; // 0.07
-	public static double kG = 0.01; // 0.5
+	public static double kP = 0.3; // 0.5
+	public static double kV = 0.5;
+	public static double kA = 0.2; // 0.07
+	public static double kG = 0.3; // 0.5
 
 	public static final double MAX_VEL = 12;
 	public static final double MAX_ACL = 24;
@@ -39,7 +39,7 @@ public class MotionProfileCommand extends Command {
 
 	public static final double WHEEL_BASE_WIDTH = (8.07 / Math.PI);
 	public static final int ENC_TPR = 1024;
-	public static final double WHEEL_DI = 0.5;
+	public static final double WHEEL_DI = 0.505;
 
 	public MotionProfileCommand(Waypoint[] points) {
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
@@ -50,8 +50,8 @@ public class MotionProfileCommand extends Command {
 
 		leftTra = modifier.getLeftTrajectory();
 		rightTra = modifier.getRightTrajectory();
-
 		requires(Drivetrain.getInstance());
+
 	}
 
 	public MotionProfileCommand(String fileName) {
@@ -62,6 +62,7 @@ public class MotionProfileCommand extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		
 		left = new GnarlyController(leftTra);
 		right = new GnarlyController(rightTra);
 		left.config((int) Drivetrain.getInstance().getLeftEncoderPosition(), ENC_TPR, WHEEL_DI, true,
@@ -87,6 +88,7 @@ public class MotionProfileCommand extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		if (left.isFinished() && right.isFinished()) {
+			System.out.println("Done");
 			return true;
 		} else {
 			return false;

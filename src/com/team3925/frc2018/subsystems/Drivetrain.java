@@ -23,10 +23,11 @@ public class Drivetrain extends Subsystem {
 	private static boolean shiftState = true;
 	private static final boolean isGyroInverted = false;
 
-	private static final double kP = 0.1;
+	private static final double kP = 0.2;
 	private static final double kI = 0;
 	private static final double kD = 0;
 	private static final double kF = 0.9;
+	
 
 	public static Drivetrain getInstance() {
 		if (instance == null)
@@ -76,6 +77,12 @@ public class Drivetrain extends Subsystem {
 	@Deprecated
 	public TalonSRX getRightMaster() {
 		return rightMaster;
+	}
+	
+	public void zero() {
+		leftMaster.setSelectedSensorPosition(0, Constants.pidIDx, Constants.timeoutMs);
+		rightMaster.setSelectedSensorPosition(0, Constants.pidIDx, Constants.timeoutMs);
+		
 	}
 
 	public double getLeftEncoderPosition() {

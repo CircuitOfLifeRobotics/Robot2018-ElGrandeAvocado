@@ -14,6 +14,10 @@ import jaci.pathfinder.Waypoint;
 public class Robot extends IterativeRobot {
 	DriveManual drive;
 	MotionProfileCommand test;
+	
+	//LOG VARIABLES
+	
+	
 
 	@Override
 	public void robotInit() {
@@ -24,7 +28,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		drive.start();
 	}
-
+	
 	@Override
 	public void autonomousInit() {
 		test.start();
@@ -43,5 +47,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		System.out.println(Drivetrain.getInstance().getLeftEncoderPosition());
 	}
 }
