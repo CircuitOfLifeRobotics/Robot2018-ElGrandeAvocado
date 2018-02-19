@@ -13,12 +13,10 @@ public class Intake extends Subsystem {
 	private final TalonSRX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
 
 	private final TalonSRX rightIntake = RobotMap.IntakeMap.RIGHT_INTAKE;
+	
+	private final TalonSRX liftMotor = RobotMap.IntakeMap.LIFT_MOTOR;
 
 	private final DoubleSolenoid grabSolenoid = RobotMap.IntakeMap.GRAB_SOLENOID;
-
-	private final DoubleSolenoid holdSolenoid = RobotMap.IntakeMap.HOLD_SOLENOID;
-
-	private final DoubleSolenoid liftSolenoid = RobotMap.IntakeMap.LIFT_SOLENOID;
 
 	private static Intake instance;
 
@@ -35,17 +33,12 @@ public class Intake extends Subsystem {
 		leftIntake.set(ControlMode.PercentOutput, speed);
 		rightIntake.set(ControlMode.PercentOutput, speed);
 	}
+	public void setLiftMotorRaw(double speed) {
+		liftMotor.set(ControlMode.PercentOutput, speed);
+	}
 
 	public void setGrabber(boolean grab) {
 		grabSolenoid.set((grab) ? Value.kForward : Value.kReverse);
-	}
-
-	public void setHold(boolean hold) {
-		holdSolenoid.set((hold) ? Value.kForward : Value.kReverse);
-	}
-
-	public void setLift(boolean down) {
-		liftSolenoid.set((down) ? Value.kForward : Value.kReverse);
 	}
 
 	@Override

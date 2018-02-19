@@ -26,9 +26,9 @@ public class RobotMap {
 		public static final WPI_TalonSRX LEFT_INTAKE = CTREControllerFactory.createDefaultTalon(11);
 		public static final WPI_TalonSRX RIGHT_INTAKE = CTREControllerFactory.createDefaultTalon(12);
 		
+		public static final WPI_TalonSRX LIFT_MOTOR = CTREControllerFactory.createDefaultTalon(13);
+		
 		public static final DoubleSolenoid GRAB_SOLENOID = new DoubleSolenoid(6, 7);
-		public static final DoubleSolenoid HOLD_SOLENOID = new DoubleSolenoid(8, 9);
-		public static final DoubleSolenoid LIFT_SOLENOID = new DoubleSolenoid(10, 11);
 	}
 
 	public static final class LiftMap{
