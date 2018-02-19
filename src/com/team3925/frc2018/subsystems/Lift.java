@@ -1,6 +1,5 @@
 package com.team3925.frc2018.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team3925.frc2018.RobotMap;
 
@@ -16,13 +15,6 @@ public class Lift extends Subsystem {
 		if (instance == null)
 			instance = new Lift();
 		return instance;
-	}
-
-	public Lift() {
-	}
-
-	public void setRaw(double speed) {
-		liftMaster.set(ControlMode.PercentOutput, speed);
 	}
 
 	@Override

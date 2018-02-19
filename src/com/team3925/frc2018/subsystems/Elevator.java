@@ -12,9 +12,11 @@ public class Elevator extends Subsystem {
 
 	private final TalonSRX elevatorMaster = RobotMap.ElevatorMap.MASTER;
 
-	private static Elevator instance;
 	private static final int ENC_TICKS_PER_REV = 4096;
+	
+	private static final double K_ELEVATOR= 0;
 
+	private static Elevator instance;
 	public static Elevator getInstance() {
 		if (instance == null)
 			instance = new Elevator();
@@ -22,29 +24,40 @@ public class Elevator extends Subsystem {
 	}
 
 	public Elevator() {
-		elevatorMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.pidIDx, Constants.timeoutMs);
+		elevatorMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.PID_ID_X,
+				Constants.TIMEOUT_MS);
+
+		elevatorMaster.selectProfileSlot(0, Constants.PID_ID_X);
+		elevatorMaster.config_kP(0, 0, Constants.TIMEOUT_MS);
+		elevatorMaster.config_kI(0, 0, Constants.TIMEOUT_MS);
+		elevatorMaster.config_kD(0, 0, Constants.TIMEOUT_MS);
+		elevatorMaster.config_kF(0, 0, Constants.TIMEOUT_MS);
+
+		elevatorMaster.configMotionAcceleration(0, Constants.TIMEOUT_MS);
+		elevatorMaster.configMotionCruiseVelocity(0, Constants.TIMEOUT_MS);
 		
-		elevatorMaster.selectProfileSlot(0, Constants.pidIDx);
-		elevatorMaster.config_kP(0, 0, Constants.timeoutMs);
-		elevatorMaster.config_kI(0, 0, Constants.timeoutMs);
-		elevatorMaster.config_kD(0, 0, Constants.timeoutMs);
-		elevatorMaster.config_kF(0, 0, Constants.timeoutMs);
-		
-		elevatorMaster.configMotionAcceleration(0, Constants.timeoutMs);
-		elevatorMaster.configMotionCruiseVelocity(0, Constants.timeoutMs);
+		elevatorMaster.overrideLimitSwitchesEnable(true);
 	}
 
 	public void setRaw(double speed) {
 		elevatorMaster.set(ControlMode.PercentOutput, speed);
 	}
+
 	private void setPosition(double revolutions) {
 		elevatorMaster.set(ControlMode.MotionMagic, (revolutions * ENC_TICKS_PER_REV));
 	}
 	
+	public void setHeight(double height) {
+		setPosition(height * K_ELEVATOR);
+	}
+
 	public void zero() {
-		elevatorMaster.setSelectedSensorPosition(0, Constants.pidIDx, Constants.timeoutMs);
+		elevatorMaster.setSelectedSensorPosition(0, Constants.PID_ID_X, Constants.TIMEOUT_MS);
 	}
 	
+	public boolean getLimitSwitch() {
+		return elevatorMaster.getSensorCollection().isRevLimitSwitchClosed();
+	}
 
 	@Override
 	protected void initDefaultCommand() {
