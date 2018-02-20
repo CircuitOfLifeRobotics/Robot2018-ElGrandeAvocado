@@ -3,7 +3,7 @@ package com.team3925.frc2018;
 import com.team3925.frc2018.commands.OpenGrabbers;
 import com.team3925.frc2018.commands.ReverseIntakeWheels;
 import com.team3925.frc2018.commands.RunIntakeWheels;
-import com.team3925.frc2018.commands.RunLift;
+import com.team3925.frc2018.commands.RunLiftJoystick;
 import com.team3925.frc2018.commands.ShiftHigh;
 import com.team3925.frc2018.commands.ShiftLow;
 import com.team3925.frc2018.commands.DriveManual.DriveManualInput;
@@ -46,7 +46,7 @@ public class OI implements DriveManualInput{
 		shift = new JoystickButton(wheel, 5);
 		
 		shoot.whileHeld(new ReverseIntakeWheels());
-		lift.whileHeld(new RunLift());
+		lift.whileHeld(new RunLiftJoystick());
 		suck.whileHeld(new RunIntakeWheels());
 		grab.whileHeld(new OpenGrabbers());
 		shift.whileHeld(new ShiftLow());
@@ -60,5 +60,10 @@ public class OI implements DriveManualInput{
 	
 	@Override public double getFwd() {
 		return -stick.getRawAxis(1);
-	}	
+	}
+	
+	public double getElevator() {
+		return xbox.getRawAxis(5);
+	}
+	}
 }

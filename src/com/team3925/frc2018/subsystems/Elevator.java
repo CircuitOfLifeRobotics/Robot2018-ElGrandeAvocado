@@ -14,7 +14,7 @@ public class Elevator extends Subsystem {
 
 	private static final int ENC_TICKS_PER_REV = 4096;
 	
-	private static final double K_ELEVATOR= 0;
+	private static final double K_ELEVATOR= 3.769;
 
 	private static Elevator instance;
 	public static Elevator getInstance() {
@@ -28,10 +28,10 @@ public class Elevator extends Subsystem {
 				Constants.TIMEOUT_MS);
 
 		elevatorMaster.selectProfileSlot(0, Constants.PID_ID_X);
-		elevatorMaster.config_kP(0, 0, Constants.TIMEOUT_MS);
+		elevatorMaster.config_kP(0, 0.1, Constants.TIMEOUT_MS);
 		elevatorMaster.config_kI(0, 0, Constants.TIMEOUT_MS);
 		elevatorMaster.config_kD(0, 0, Constants.TIMEOUT_MS);
-		elevatorMaster.config_kF(0, 0, Constants.TIMEOUT_MS);
+		elevatorMaster.config_kF(0, .1, Constants.TIMEOUT_MS);
 
 		elevatorMaster.configMotionAcceleration(0, Constants.TIMEOUT_MS);
 		elevatorMaster.configMotionCruiseVelocity(0, Constants.TIMEOUT_MS);
@@ -48,7 +48,7 @@ public class Elevator extends Subsystem {
 	}
 	
 	public void setHeight(double height) {
-		setPosition(height * K_ELEVATOR);
+		setPosition(height / K_ELEVATOR);
 	}
 
 	public void zero() {

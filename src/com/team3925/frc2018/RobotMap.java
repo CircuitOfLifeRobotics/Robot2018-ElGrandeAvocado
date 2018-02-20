@@ -32,13 +32,13 @@ public class RobotMap {
 	}
 
 	public static final class LiftMap{
-		public static final WPI_TalonSRX MASTER = CTREControllerFactory.createDefaultTalon(7);
-		public static final WPI_VictorSPX SLAVE  = CTREControllerFactory.createPermanentSlaveVictor(8, MASTER);
+		public static final WPI_TalonSRX MASTER = CTREControllerFactory.createDefaultTalon(9);
+		public static final WPI_VictorSPX SLAVE  = CTREControllerFactory.createPermanentSlaveVictor(10, MASTER);
 	}
 	
 	public static final class ElevatorMap{
-		public static final WPI_TalonSRX MASTER = CTREControllerFactory.createDefaultTalon(9);
-		public static final WPI_TalonSRX SLAVE = CTREControllerFactory.createPermanentSlaveTalon(10, MASTER);
+		public static final WPI_TalonSRX MASTER = CTREControllerFactory.createDefaultTalon(8);
+		public static final WPI_VictorSPX SLAVE = CTREControllerFactory.createPermanentSlaveVictor(7, MASTER);
 		
 		public static final DoubleSolenoid GRABBER_SOLENOID = new DoubleSolenoid(2, 3);
 		public static final DoubleSolenoid SPATULA_SOLENOID = new DoubleSolenoid(4, 5);
