@@ -28,19 +28,20 @@ public class RobotMap {
 		
 		public static final WPI_TalonSRX LIFT_MOTOR = CTREControllerFactory.createDefaultTalon(13);
 		
-		public static final DoubleSolenoid GRAB_SOLENOID = new DoubleSolenoid(6, 7);
+		public static final DoubleSolenoid GRAB_SOLENOID = new DoubleSolenoid(2, 3);
 	}
 
 	public static final class LiftMap{
-		public static final WPI_TalonSRX MASTER = CTREControllerFactory.createDefaultTalon(9);
-		public static final WPI_VictorSPX SLAVE  = CTREControllerFactory.createPermanentSlaveVictor(10, MASTER);
+		public static final WPI_TalonSRX MASTER = CTREControllerFactory.createDefaultTalon(8);
+		public static final WPI_VictorSPX SLAVE  = CTREControllerFactory.createPermanentSlaveVictor(7, MASTER);
 	}
 	
 	public static final class ElevatorMap{
-		public static final WPI_TalonSRX MASTER = CTREControllerFactory.createDefaultTalon(8);
-		public static final WPI_VictorSPX SLAVE = CTREControllerFactory.createPermanentSlaveVictor(7, MASTER);
+		public static final WPI_TalonSRX MASTER = CTREControllerFactory.createDefaultTalon(9);
+		public static final WPI_VictorSPX SLAVE = CTREControllerFactory.createPermanentSlaveVictor(10, MASTER);
+//		public static final WPI_VictorSPX SLAVE = CTREControllerFactory.createDefaultVictor(7);
 		
-		public static final DoubleSolenoid GRABBER_SOLENOID = new DoubleSolenoid(2, 3);
+		public static final DoubleSolenoid GRABBER_SOLENOID = new DoubleSolenoid(6, 7);
 		public static final DoubleSolenoid SPATULA_SOLENOID = new DoubleSolenoid(4, 5);
 	}
 }

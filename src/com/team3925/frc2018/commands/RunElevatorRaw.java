@@ -5,14 +5,12 @@ import com.team3925.frc2018.subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class RunElevator extends Command{
-	
-	
-	private static final double MAX_HEIGHT = 12;
-	
+public class RunElevatorRaw extends Command {
+
+
 	@Override
 	protected void execute() {
-		Elevator.getInstance().setHeight(MAX_HEIGHT * OI.getInstance().getElevator());
+		Elevator.getInstance().setRaw(OI.getInstance().getRawElevator());
 	}
 
 	@Override

@@ -45,6 +45,8 @@ public class Intake extends Subsystem {
 
 		liftMotor.configMotionAcceleration(0, Constants.TIMEOUT_MS);
 		liftMotor.configMotionCruiseVelocity(0, Constants.TIMEOUT_MS);
+		
+		leftIntake.setInverted(true);
 	}
 	
 	private void setPosition(double revolutions) {
@@ -66,6 +68,10 @@ public class Intake extends Subsystem {
 	
 	public void setAngle(double degrees) {
 		setPosition((degrees * 360) * (LIFT_BIG_GEAR_TEETH / LIFT_SMALL_GEAR_TEETH));
+	}
+	
+	public double getPosition() {
+		return liftMotor.getSelectedSensorPosition(0);
 	}
 
 	@Override

@@ -1,12 +1,11 @@
 package com.team3925.frc2018;
 
+import com.team3925.frc2018.commands.DriveManual.DriveManualInput;
 import com.team3925.frc2018.commands.OpenGrabbers;
 import com.team3925.frc2018.commands.ReverseIntakeWheels;
 import com.team3925.frc2018.commands.RunIntakeWheels;
-import com.team3925.frc2018.commands.RunLiftJoystick;
 import com.team3925.frc2018.commands.ShiftHigh;
 import com.team3925.frc2018.commands.ShiftLow;
-import com.team3925.frc2018.commands.DriveManual.DriveManualInput;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -22,7 +21,6 @@ public class OI implements DriveManualInput{
 	
 	private Button grab;
 	private Button suck;
-	private Button lift;
 	private Button shoot;
 	private Button shift;
 	
@@ -39,14 +37,12 @@ public class OI implements DriveManualInput{
 		
 		grab = new JoystickButton(xbox, 1);
 		suck = new JoystickButton(xbox, 2);
-		lift = new JoystickButton(xbox, 3);
 		shoot = new JoystickButton(xbox, 4);
 		
 		
 		shift = new JoystickButton(wheel, 5);
 		
 		shoot.whileHeld(new ReverseIntakeWheels());
-		lift.whileHeld(new RunLiftJoystick());
 		suck.whileHeld(new RunIntakeWheels());
 		grab.whileHeld(new OpenGrabbers());
 		shift.whileHeld(new ShiftLow());
@@ -63,7 +59,10 @@ public class OI implements DriveManualInput{
 	}
 	
 	public double getElevator() {
-		return xbox.getRawAxis(5);
+		return -xbox.getRawAxis(5);
 	}
+	
+	public double getRawElevator() {
+		return -xbox.getRawAxis(1);
 	}
 }

@@ -8,7 +8,7 @@ public class RunIntakeWheels extends Command{
 	
 	@Override
 	protected void initialize() {
-		Intake.getInstance().setIntakeRollers(1);
+		Intake.getInstance().setIntakeRollers(0.6);
 	}
 	
 	@Override
