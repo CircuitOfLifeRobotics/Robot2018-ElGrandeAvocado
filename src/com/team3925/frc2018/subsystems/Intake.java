@@ -61,6 +61,10 @@ public class Intake extends Subsystem {
 	public void setLiftMotorRaw(double speed) {
 		liftMotor.set(ControlMode.PercentOutput, speed);
 	}
+	
+	public boolean getLiftMotorLimitSwitch() {
+		return liftMotor.getSensorCollection().isRevLimitSwitchClosed();
+	}
 
 	public void setGrabber(boolean grab) {
 		grabSolenoid.set((grab) ? Value.kForward : Value.kReverse);
@@ -72,6 +76,10 @@ public class Intake extends Subsystem {
 	
 	public double getPosition() {
 		return liftMotor.getSelectedSensorPosition(0);
+	}
+	
+	public void zeroLift() {
+		liftMotor.setSelectedSensorPosition(0, Constants.PID_ID_X, Constants.TIMEOUT_MS);
 	}
 
 	@Override
