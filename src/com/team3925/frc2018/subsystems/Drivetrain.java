@@ -63,6 +63,7 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 		RobotMap.DrivetrainMap.RIGHT_MASTER.setNeutralMode(drivetrainNeutralMode);
 		RobotMap.DrivetrainMap.RIGHT_SLAVE_A.setNeutralMode(drivetrainNeutralMode);
 		RobotMap.DrivetrainMap.RIGHT_SLAVE_B.setNeutralMode(drivetrainNeutralMode);
+		
 	}
 
 	public void setRaw(double l, double r) {

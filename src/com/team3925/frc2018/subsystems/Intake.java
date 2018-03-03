@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake extends Subsystem {
-	
+
 	private final int ENC_TICKS_PER_REV = 4096;
-	
+
 	private final int LIFT_BIG_GEAR_TEETH = 10;
 	private final int LIFT_SMALL_GEAR_TEETH = 10;
 
@@ -45,10 +45,10 @@ public class Intake extends Subsystem {
 
 		liftMotor.configMotionAcceleration(0, Constants.TIMEOUT_MS);
 		liftMotor.configMotionCruiseVelocity(0, Constants.TIMEOUT_MS);
-		
+
 		leftIntake.setInverted(true);
 	}
-	
+
 	private void setPosition(double revolutions) {
 		liftMotor.set(ControlMode.MotionMagic, (revolutions * ENC_TICKS_PER_REV));
 	}
@@ -61,7 +61,7 @@ public class Intake extends Subsystem {
 	public void setLiftMotorRaw(double speed) {
 		liftMotor.set(ControlMode.PercentOutput, speed);
 	}
-	
+
 	public boolean getLiftMotorLimitSwitch() {
 		return liftMotor.getSensorCollection().isRevLimitSwitchClosed();
 	}
@@ -69,21 +69,33 @@ public class Intake extends Subsystem {
 	public void setGrabber(boolean grab) {
 		grabSolenoid.set((grab) ? Value.kForward : Value.kReverse);
 	}
-	
+
 	public void setAngle(double degrees) {
 		setPosition((degrees * 360) * (LIFT_BIG_GEAR_TEETH / LIFT_SMALL_GEAR_TEETH));
 	}
-	
+
 	public double getPosition() {
 		return liftMotor.getSelectedSensorPosition(0);
 	}
-	
+
 	public void zeroLift() {
 		liftMotor.setSelectedSensorPosition(0, Constants.PID_ID_X, Constants.TIMEOUT_MS);
 	}
 
 	@Override
 	protected void initDefaultCommand() {
+	}
+
+	public double getLeftCurrent() {
+
+		return leftIntake.getOutputCurrent();
+
+	}
+
+	public double getRightCurrent() {
+
+		return rightIntake.getOutputCurrent();
+
 	}
 
 }

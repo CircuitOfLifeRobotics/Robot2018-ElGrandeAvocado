@@ -22,8 +22,8 @@ public class Elevator extends Subsystem {
 	private static final double kD = 0;
 	private static final double kF = 1;
 
-	private static final int MOTION_MAGIC_ACCELERATION = 4096;
-	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 4096;
+	private static final int MOTION_MAGIC_ACCELERATION = 20594;
+	private static final double MOTION_MAGIC_CRUISE_VELOCITY = 5466.8;
 	
 	private static final int MAX_AMP_DRAW = 30;
 

@@ -44,44 +44,44 @@ public class CTREControllerFactory {
 	}
 
 	private static BaseMotorController applyGenericSettings(BaseMotorController controller) {
-		controller.config_IntegralZone(0, 0, Constants.TIMEOUT_MS);
-		controller.config_kD(0, 0, Constants.TIMEOUT_MS);
-		controller.config_kF(0, 0, Constants.TIMEOUT_MS);
-		controller.config_kI(0, 0, Constants.TIMEOUT_MS);
-		controller.config_kP(0, 0, Constants.TIMEOUT_MS);
-		controller.configAllowableClosedloopError(0, 0, Constants.TIMEOUT_MS);
-		controller.configClosedloopRamp(0, Constants.TIMEOUT_MS);
-		controller.configForwardLimitSwitchSource(RemoteLimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled, 0,
-				Constants.TIMEOUT_MS);
-		controller.configForwardSoftLimitEnable(false, Constants.TIMEOUT_MS);
-		controller.configForwardSoftLimitThreshold(0, Constants.TIMEOUT_MS);
-		controller.configMaxIntegralAccumulator(0, 0, Constants.TIMEOUT_MS);
-		controller.configMotionAcceleration(0, Constants.TIMEOUT_MS);
-		controller.configMotionCruiseVelocity(0, Constants.TIMEOUT_MS);
-		controller.configNeutralDeadband(0, Constants.TIMEOUT_MS);
-		controller.configNominalOutputForward(0, Constants.TIMEOUT_MS);
-		controller.configNominalOutputReverse(0, Constants.TIMEOUT_MS);
-		controller.configOpenloopRamp(0, Constants.TIMEOUT_MS);
-		controller.configPeakOutputForward(0, Constants.TIMEOUT_MS);
-		controller.configPeakOutputReverse(0, Constants.TIMEOUT_MS);
-		controller.configRemoteFeedbackFilter(0, RemoteSensorSource.Off, 0, Constants.TIMEOUT_MS);
-		controller.configReverseLimitSwitchSource(RemoteLimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled,
-				0, Constants.TIMEOUT_MS);
-		controller.configReverseSoftLimitThreshold(0, Constants.TIMEOUT_MS);
-		controller.configSelectedFeedbackSensor(RemoteFeedbackDevice.None, 0, Constants.TIMEOUT_MS);
-		controller.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.None, Constants.TIMEOUT_MS);
-		controller.configSetCustomParam(0, 0, Constants.TIMEOUT_MS);
-		controller.configVoltageCompSaturation(0, Constants.TIMEOUT_MS);
-		controller.configVoltageMeasurementFilter(0, Constants.TIMEOUT_MS);
-		
-		controller.overrideLimitSwitchesEnable(false);
-		controller.clearStickyFaults(Constants.TIMEOUT_MS);
-		controller.clearMotionProfileTrajectories();
-		controller.enableHeadingHold(false);
-		controller.enableVoltageCompensation(false);
-		controller.overrideSoftLimitsEnable(false);
-		controller.setInverted(false);
-		
+//		controller.config_IntegralZone(0, 0, Constants.TIMEOUT_MS);
+//		controller.config_kD(0, 0, Constants.TIMEOUT_MS);
+//		controller.config_kF(0, 0, Constants.TIMEOUT_MS);
+//		controller.config_kI(0, 0, Constants.TIMEOUT_MS);
+//		controller.config_kP(0, 0, Constants.TIMEOUT_MS);
+//		controller.configAllowableClosedloopError(0, 0, Constants.TIMEOUT_MS);
+//		controller.configClosedloopRamp(0, Constants.TIMEOUT_MS);
+//		controller.configForwardLimitSwitchSource(RemoteLimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled, 0,
+//				Constants.TIMEOUT_MS);
+//		controller.configForwardSoftLimitEnable(false, Constants.TIMEOUT_MS);
+//		controller.configForwardSoftLimitThreshold(0, Constants.TIMEOUT_MS);
+//		controller.configMaxIntegralAccumulator(0, 0, Constants.TIMEOUT_MS);
+//		controller.configMotionAcceleration(0, Constants.TIMEOUT_MS);
+//		controller.configMotionCruiseVelocity(0, Constants.TIMEOUT_MS);
+//		controller.configNeutralDeadband(0, Constants.TIMEOUT_MS);
+//		controller.configNominalOutputForward(0, Constants.TIMEOUT_MS);
+//		controller.configNominalOutputReverse(0, Constants.TIMEOUT_MS);
+//		controller.configOpenloopRamp(0, Constants.TIMEOUT_MS);
+//		controller.configPeakOutputForward(0, Constants.TIMEOUT_MS);
+//		controller.configPeakOutputReverse(0, Constants.TIMEOUT_MS);
+////		controller.configRemoteFeedbackFilter(0, RemoteSensorSource.Off, 0, Constants.TIMEOUT_MS);
+////		controller.configReverseLimitSwitchSource(RemoteLimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled,
+////				0, Constants.TIMEOUT_MS);
+//		controller.configReverseSoftLimitThreshold(0, Constants.TIMEOUT_MS);
+//		controller.configSelectedFeedbackSensor(RemoteFeedbackDevice.None, 0, Constants.TIMEOUT_MS);
+////		controller.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.None, Constants.TIMEOUT_MS);
+////		controller.configSetCustomParam(0, 0, Constants.TIMEOUT_MS);
+//		controller.configVoltageCompSaturation(0, Constants.TIMEOUT_MS);
+//		controller.configVoltageMeasurementFilter(0, Constants.TIMEOUT_MS);
+//		
+//		controller.overrideLimitSwitchesEnable(false);
+//		controller.clearStickyFaults(Constants.TIMEOUT_MS);
+//		controller.clearMotionProfileTrajectories();
+//		controller.enableHeadingHold(false);
+//		controller.enableVoltageCompensation(false);
+//		controller.overrideSoftLimitsEnable(false);
+//		controller.setInverted(false);
+
 		return controller;
 	}
 }
