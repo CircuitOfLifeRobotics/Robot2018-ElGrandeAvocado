@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
 
+	
 	private final TalonSRX elevatorMaster = RobotMap.ElevatorMap.MASTER;
 
 	private static final int ENC_TICKS_PER_REV = 4096;
@@ -54,8 +55,9 @@ public class Elevator extends Subsystem {
 		elevatorMaster.configPeakCurrentLimit(0, Constants.TIMEOUT_MS);
 	}
 
+	
 	public void setRaw(double speed) {
-		elevatorMaster.set(ControlMode.PercentOutput, speed);
+		elevatorMaster.set(ControlMode.PercentOutput, 0.8 * speed);
 	}
 
 	private void setPosition(double revolutions) {

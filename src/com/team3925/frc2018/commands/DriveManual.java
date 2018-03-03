@@ -13,6 +13,8 @@ public class DriveManual extends Command {
 	}
 
 	private final boolean doReverseWhenReversing;
+	
+	
 	private DriveManualInput input;
 	private double prelimLeft, prelimRight;
 	private double fwd, turn;

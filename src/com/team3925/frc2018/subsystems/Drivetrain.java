@@ -2,6 +2,7 @@ package com.team3925.frc2018.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
@@ -27,6 +28,8 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 	private double kI = 0;
 	private double kD = 0;
 	private double kF = 0.9;
+	
+	private static final NeutralMode drivetrainNeutralMode = NeutralMode.Brake;
 
 	public static Drivetrain getInstance() {
 		if (instance == null)
@@ -38,7 +41,7 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 		RobotMap.DrivetrainMap.LEFT_MASTER.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_A.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setInverted(true);
-
+		
 		leftMaster.setSensorPhase(true);
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
@@ -52,6 +55,14 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 		rightMaster.config_kP(Constants.PID_ID_X, kP, Constants.TIMEOUT_MS);
 		rightMaster.config_kI(Constants.PID_ID_X, kI, Constants.TIMEOUT_MS);
 		rightMaster.config_kD(Constants.PID_ID_X, kD, Constants.TIMEOUT_MS);
+		
+		RobotMap.DrivetrainMap.LEFT_MASTER.setNeutralMode(drivetrainNeutralMode);
+		RobotMap.DrivetrainMap.LEFT_SLAVE_A.setNeutralMode(drivetrainNeutralMode);
+		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setNeutralMode(drivetrainNeutralMode);
+		
+		RobotMap.DrivetrainMap.RIGHT_MASTER.setNeutralMode(drivetrainNeutralMode);
+		RobotMap.DrivetrainMap.RIGHT_SLAVE_A.setNeutralMode(drivetrainNeutralMode);
+		RobotMap.DrivetrainMap.RIGHT_SLAVE_B.setNeutralMode(drivetrainNeutralMode);
 	}
 
 	public void setRaw(double l, double r) {
