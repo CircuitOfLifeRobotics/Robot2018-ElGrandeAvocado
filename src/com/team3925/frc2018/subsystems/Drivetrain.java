@@ -60,10 +60,15 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 		RobotMap.DrivetrainMap.LEFT_SLAVE_A.setNeutralMode(drivetrainNeutralMode);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setNeutralMode(drivetrainNeutralMode);
 		
+		RobotMap.DrivetrainMap.LEFT_MASTER.configOpenloopRamp(0.2, Constants.TIMEOUT_MS);
+		RobotMap.DrivetrainMap.RIGHT_MASTER.configOpenloopRamp(0.2, Constants.TIMEOUT_MS);
+		
 		RobotMap.DrivetrainMap.RIGHT_MASTER.setNeutralMode(drivetrainNeutralMode);
 		RobotMap.DrivetrainMap.RIGHT_SLAVE_A.setNeutralMode(drivetrainNeutralMode);
 		RobotMap.DrivetrainMap.RIGHT_SLAVE_B.setNeutralMode(drivetrainNeutralMode);
 		
+		leftMaster.overrideLimitSwitchesEnable(false);
+		rightMaster.overrideLimitSwitchesEnable(false);
 	}
 
 	public void setRaw(double l, double r) {
@@ -115,6 +120,11 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 	public void setVelocity(double l, double r) {
 		leftMaster.set(ControlMode.Velocity, l);
 		rightMaster.set(ControlMode.Velocity, r);
+	}
+	
+	public void setRamp(double ramp) {
+		leftMaster.configOpenloopRamp(ramp, Constants.TIMEOUT_MS);
+		rightMaster.configOpenloopRamp(ramp, Constants.TIMEOUT_MS);
 	}
 
 	public double getGyroHeading() {

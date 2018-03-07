@@ -7,22 +7,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RunIntakeWheels extends Command{
 	
-	@Override
-	protected void initialize() {
-		Intake.getInstance().setIntakeRollers(0.6);
+	private double speed;
+	
+	public RunIntakeWheels(double speed) {
+		this.speed = speed;
 	}
 	
 	@Override
-	protected void end() {
-		Intake.getInstance().setIntakeRollers(0);
-		SmartDashboard.putNumber("Intake Left Current", Intake.getInstance().getLeftCurrent());
-		SmartDashboard.putNumber("Intake Right Current", Intake.getInstance().getRightCurrent());
-
+	protected void initialize() {
+		Intake.getInstance().setIntakeRollers(speed);
 	}
-
+	
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 
 }

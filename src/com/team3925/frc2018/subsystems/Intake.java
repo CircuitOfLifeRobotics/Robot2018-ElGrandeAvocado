@@ -3,6 +3,8 @@ package com.team3925.frc2018.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
 
@@ -12,16 +14,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake extends Subsystem {
 
-	private final int ENC_TICKS_PER_REV = 4096;
-
-	private final int LIFT_BIG_GEAR_TEETH = 10;
-	private final int LIFT_SMALL_GEAR_TEETH = 10;
+	private final int LIFT_BIG_GEAR_TEETH = 60;
+	private final int LIFT_SMALL_GEAR_TEETH = 40;
 
 	private final TalonSRX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
 
-	private final TalonSRX rightIntake = RobotMap.IntakeMap.RIGHT_INTAKE;
+	private final VictorSPX rightIntake = RobotMap.IntakeMap.RIGHT_INTAKE;
 
 	private final TalonSRX liftMotor = RobotMap.IntakeMap.LIFT_MOTOR;
+	
 
 	private final DoubleSolenoid grabSolenoid = RobotMap.IntakeMap.GRAB_SOLENOID;
 
@@ -50,7 +51,7 @@ public class Intake extends Subsystem {
 	}
 
 	private void setPosition(double revolutions) {
-		liftMotor.set(ControlMode.MotionMagic, (revolutions * ENC_TICKS_PER_REV));
+		liftMotor.set(ControlMode.MotionMagic, (revolutions * Constants.CTRE_ENCODER_TICKS_PER_REV));
 	}
 
 	public void setIntakeRollers(double speed) {
@@ -67,11 +68,11 @@ public class Intake extends Subsystem {
 	}
 
 	public void setGrabber(boolean grab) {
-		grabSolenoid.set((grab) ? Value.kForward : Value.kReverse);
+		grabSolenoid.set((!grab) ? Value.kForward : Value.kReverse);
 	}
 
 	public void setAngle(double degrees) {
-		setPosition((degrees * 360) * (LIFT_BIG_GEAR_TEETH / LIFT_SMALL_GEAR_TEETH));
+		setPosition(((degrees / 360) * (LIFT_BIG_GEAR_TEETH / LIFT_SMALL_GEAR_TEETH)) * Constants.CTRE_ENCODER_TICKS_PER_REV);
 	}
 
 	public double getPosition() {

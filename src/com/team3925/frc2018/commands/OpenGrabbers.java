@@ -12,13 +12,7 @@ public class OpenGrabbers extends Command{
 	}
 	
 	@Override
-	protected void end() {
-		Intake.getInstance().setGrabber(false);
-	}
-
-	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
-	
 }

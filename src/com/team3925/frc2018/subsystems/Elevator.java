@@ -6,26 +6,35 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
 
+
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
 
+	public enum ElevatorState{
+		TOP, SCALE_MAX, SCALE_MED, SCALE_LOW, SWITCH, BOTTOM, UNKNOWN, OTHER;
+	}
 	
 	private final TalonSRX elevatorMaster = RobotMap.ElevatorMap.MASTER;
 
-	private static final int ENC_TICKS_PER_REV = 4096;
-	private static final double K_ELEVATOR = 3.769;
+	private static final double K_ELEVATOR = 1176.48;
+	
+	public static final double TELEOP_ELEVATOR_INCREMENT = 8;
 
-	private static final double kP = 0;
+	private static final double kP = 0.2; //0.015 | 0.2
 	private static final double kI = 0;
 	private static final double kD = 0;
-	private static final double kF = 1;
+	private static final double kF = 0.35;
 
-	private static final int MOTION_MAGIC_ACCELERATION = 20594;
-	private static final double MOTION_MAGIC_CRUISE_VELOCITY = 5466.8;
+	private static final int MOTION_MAGIC_ACCELERATION = 9001;
+	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467; //5467
+//	private static final int MOTION_MAGIC_ACCELERATION = 20594;
+//	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467;
 	
-	private static final int MAX_AMP_DRAW = 30;
+	private static final double MAX_SCALE_HEIGHT = (12 * 5.5) + 4.6667;
+	public static double elevatorHeight = 0;
 
 	private static Elevator instance;
 
@@ -36,8 +45,9 @@ public class Elevator extends Subsystem {
 	}
 
 	public Elevator() {
-		elevatorMaster.setInverted(false);
-		elevatorMaster.setSensorPhase(false);
+		elevatorMaster.setInverted(true);
+		RobotMap.ElevatorMap.SLAVE.setInverted(true);
+		elevatorMaster.setSensorPhase(true);
 		elevatorMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.PID_ID_X,
 				Constants.TIMEOUT_MS);
 
@@ -51,26 +61,57 @@ public class Elevator extends Subsystem {
 		elevatorMaster.configMotionCruiseVelocity(MOTION_MAGIC_CRUISE_VELOCITY, Constants.TIMEOUT_MS);
 
 		elevatorMaster.overrideLimitSwitchesEnable(true);
-		elevatorMaster.configContinuousCurrentLimit(MAX_AMP_DRAW, Constants.TIMEOUT_MS);
-		elevatorMaster.configPeakCurrentLimit(0, Constants.TIMEOUT_MS);
+		elevatorMaster.configContinuousCurrentLimit(200, Constants.TIMEOUT_MS);
+		
+		elevatorMaster.configNominalOutputForward(1, Constants.TIMEOUT_MS);
+		elevatorMaster.configNominalOutputReverse(-1, Constants.TIMEOUT_MS);
+		RobotMap.ElevatorMap.SLAVE.configNominalOutputForward(1, Constants.TIMEOUT_MS);
+		RobotMap.ElevatorMap.SLAVE.configNominalOutputReverse(-1, Constants.TIMEOUT_MS);
 	}
 
 	
 	public void setRaw(double speed) {
-		elevatorMaster.set(ControlMode.PercentOutput, 0.8 * speed);
+		elevatorMaster.set(ControlMode.PercentOutput, speed);
+	}
+	
+	public boolean isElevatorAtSetpoint() {
+		return elevatorMaster.getClosedLoopError(0) < 100;
 	}
 
-	private void setPosition(double revolutions) {
-		elevatorMaster.set(ControlMode.MotionMagic, (revolutions * ENC_TICKS_PER_REV));
-		System.out.println(revolutions * ENC_TICKS_PER_REV);
+	public void setPosition(double inches){
+		elevatorMaster.set(ControlMode.MotionMagic, (Math.min(inches, MAX_SCALE_HEIGHT) * K_ELEVATOR));
+		elevatorHeight = inches;
 	}
-
-	public void setHeight(double height) {
-		setPosition(height / K_ELEVATOR);
+	
+	public void setPosition(ElevatorState state){
+		switch(state) {
+		case TOP:
+			setPosition((12 * 5.5) + 4.667);
+			break;
+		case SCALE_MAX:
+			setPosition(12 * 5.5);
+			break;
+		case SCALE_MED:
+			setPosition(12 * 5);
+			break;
+		case SCALE_LOW:
+			setPosition(12 * 4.5);
+			break;
+		case BOTTOM:
+			setPosition(3);
+			break;
+		case SWITCH:
+			setPosition(12 * 2.5);
+			break;
+		}
+	}
+	public double getElevatorHeightPercentage() {
+		return elevatorHeight / MAX_SCALE_HEIGHT;
 	}
 
 	public void zero() {
 		elevatorMaster.setSelectedSensorPosition(0, Constants.PID_ID_X, Constants.TIMEOUT_MS);
+		setPosition(0);
 	}
 
 	public boolean getLimitSwitch() {

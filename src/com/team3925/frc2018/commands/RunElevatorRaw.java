@@ -10,7 +10,9 @@ public class RunElevatorRaw extends Command {
 
 	@Override
 	protected void execute() {
-		Elevator.getInstance().setRaw(OI.getInstance().getRawElevator());
+		if (Math.abs(OI.getInstance().getRawElevator()) > 0.2){
+			Elevator.getInstance().setRaw(OI.getInstance().getRawElevator());
+		}
 	}
 
 	@Override

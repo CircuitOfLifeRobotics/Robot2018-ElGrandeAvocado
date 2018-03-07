@@ -4,21 +4,15 @@ import com.team3925.frc2018.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ReverseIntakeWheels extends Command{
+public class CloseGrabbers extends Command{
 	
 	@Override
 	protected void initialize() {
-		Intake.getInstance().setIntakeRollers(-0.6);
+		Intake.getInstance().setGrabber(false);
 	}
 	
 	@Override
-	protected void end() {
-		Intake.getInstance().setIntakeRollers(0);
-	}
-
-	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
-
 }
