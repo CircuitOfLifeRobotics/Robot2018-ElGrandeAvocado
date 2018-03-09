@@ -39,11 +39,14 @@ public class CTREControllerFactory {
 
 	public static WPI_VictorSPX createPermanentSlaveVictor(int id, IMotorController masterId) {
 		final WPI_VictorSPX victor = createDefaultVictor(id);
+		applyGenericSettings(victor);
 		victor.follow(masterId);
 		return victor;
 	}
 
 	private static BaseMotorController applyGenericSettings(BaseMotorController controller) {
+		controller.setNeutralMode(NeutralMode.Brake);
+		controller.overrideLimitSwitchesEnable(false);
 //		controller.config_IntegralZone(0, 0, Constants.TIMEOUT_MS);
 //		controller.config_kD(0, 0, Constants.TIMEOUT_MS);
 //		controller.config_kF(0, 0, Constants.TIMEOUT_MS);

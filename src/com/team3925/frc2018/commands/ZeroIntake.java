@@ -13,17 +13,18 @@ public class ZeroIntake extends Command {
 	}
 
 	@Override
-	protected void end() {
-		// stop motor
-		Intake.getInstance().zeroLift();
-		Intake.getInstance().setLiftMotorRaw(0);
-
-	}
-
-	@Override
 	protected void execute() {
 		Intake.getInstance().setLiftMotorRaw(-0.2);
 
 	}
 
-}// end of class
+	@Override
+	protected void end() {
+		// stop motor
+		Intake.getInstance().zeroLift();
+		Intake.getInstance().setLiftMotorRaw(0);
+		Intake.getInstance().setAngle(85);
+
+	}
+
+}

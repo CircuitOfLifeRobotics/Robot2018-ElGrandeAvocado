@@ -26,10 +26,12 @@ public class Elevator extends Subsystem {
 	private static final double kP = 0.2; //0.015 | 0.2
 	private static final double kI = 0;
 	private static final double kD = 0;
-	private static final double kF = 0.35;
+	private static final double kF = 0.35; //0.35
 
 	private static final int MOTION_MAGIC_ACCELERATION = 9001;
-	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467; //5467
+	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467;
+//	private static final int MOTION_MAGIC_ACCELERATION = 9001;
+//	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467;
 //	private static final int MOTION_MAGIC_ACCELERATION = 20594;
 //	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467;
 	
@@ -60,13 +62,13 @@ public class Elevator extends Subsystem {
 		elevatorMaster.configMotionAcceleration(MOTION_MAGIC_ACCELERATION, Constants.TIMEOUT_MS);
 		elevatorMaster.configMotionCruiseVelocity(MOTION_MAGIC_CRUISE_VELOCITY, Constants.TIMEOUT_MS);
 
-		elevatorMaster.overrideLimitSwitchesEnable(true);
+		elevatorMaster.overrideLimitSwitchesEnable(false);
 		elevatorMaster.configContinuousCurrentLimit(200, Constants.TIMEOUT_MS);
 		
-		elevatorMaster.configNominalOutputForward(1, Constants.TIMEOUT_MS);
-		elevatorMaster.configNominalOutputReverse(-1, Constants.TIMEOUT_MS);
-		RobotMap.ElevatorMap.SLAVE.configNominalOutputForward(1, Constants.TIMEOUT_MS);
-		RobotMap.ElevatorMap.SLAVE.configNominalOutputReverse(-1, Constants.TIMEOUT_MS);
+		elevatorMaster.configNominalOutputForward(0, Constants.TIMEOUT_MS);
+		elevatorMaster.configNominalOutputReverse(0, Constants.TIMEOUT_MS);
+		RobotMap.ElevatorMap.SLAVE.configNominalOutputForward(0, Constants.TIMEOUT_MS);
+		RobotMap.ElevatorMap.SLAVE.configNominalOutputReverse(0, Constants.TIMEOUT_MS);
 	}
 
 	
@@ -79,6 +81,7 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setPosition(double inches){
+//		elevatorMaster.set(ControlMode.Position, (inches * K_ELEVATOR));
 		elevatorMaster.set(ControlMode.MotionMagic, (Math.min(inches, MAX_SCALE_HEIGHT) * K_ELEVATOR));
 		elevatorHeight = inches;
 	}
@@ -89,19 +92,19 @@ public class Elevator extends Subsystem {
 			setPosition((12 * 5.5) + 4.667);
 			break;
 		case SCALE_MAX:
-			setPosition(12 * 5.5);
-			break;
-		case SCALE_MED:
 			setPosition(12 * 5);
 			break;
-		case SCALE_LOW:
+		case SCALE_MED:
 			setPosition(12 * 4.5);
+			break;
+		case SCALE_LOW:
+			setPosition(12 * 4);
 			break;
 		case BOTTOM:
 			setPosition(3);
 			break;
 		case SWITCH:
-			setPosition(12 * 2.5);
+			setPosition(12 * 2);
 			break;
 		}
 	}

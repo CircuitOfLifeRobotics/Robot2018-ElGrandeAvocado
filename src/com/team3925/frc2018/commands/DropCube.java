@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class DropCube extends CommandGroup{
 	public DropCube() {
 		addParallel(new OpenGrabbers());
-		addSequential(new RunIntakeWheels(-0.25));
+		addSequential(new RunIntakeWheels(-0.40));
 		addSequential(new WaitCommand(0.5));
 		addParallel(new RunIntakeWheels(0));
 		addSequential(new CloseGrabbers());

@@ -8,6 +8,8 @@ import com.team3925.frc2018.commands.IncrementAdjustElevator;
 import com.team3925.frc2018.commands.OpenGrabbers;
 import com.team3925.frc2018.commands.RunElevator;
 import com.team3925.frc2018.commands.RunIntakeWheels;
+import com.team3925.frc2018.commands.SetLiftBottom;
+import com.team3925.frc2018.commands.SetLiftTop;
 import com.team3925.frc2018.commands.ShiftHigh;
 import com.team3925.frc2018.commands.ShiftLow;
 import com.team3925.frc2018.commands.ShootCube;
@@ -62,8 +64,8 @@ public class OI implements DriveManualInput{
 		
 		drivetrain_Shift = new JoystickButton(wheel, 5);
 		
-		openIntake = new JoystickButton(xbox, 6);
-		intakeCube = new JoystickButton(xbox, 5);
+		openIntake = new JoystickButton(xbox, 5);
+		intakeCube = new JoystickButton(xbox, 6);
 				
 		dropCube = new Trigger() {
 			@Override
@@ -113,7 +115,9 @@ public class OI implements DriveManualInput{
 		openIntake.whenReleased(new CloseGrabbers());
 		
 		intakeCube.whenPressed(new RunIntakeWheels(1));
+		intakeCube.whenPressed(new SetLiftBottom());
 		intakeCube.whenReleased(new RunIntakeWheels(0));
+		intakeCube.whenReleased(new SetLiftTop());
 		
 		tuneUp.whenActive(new IncrementAdjustElevator());
 		tuneDown.whenActive(new DecrementAdjustElevator());
@@ -137,7 +141,7 @@ public class OI implements DriveManualInput{
 	}
 	
 	public double getRawElevator() {
-		return stick.getRawAxis(5);
+		return xbox.getRawAxis(5);
 	}
 	public boolean getTestButton() {
 		return wheel.getRawButton(4);
