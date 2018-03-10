@@ -6,8 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
 
-
-
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -89,19 +88,19 @@ public class Elevator extends Subsystem {
 	public void setPosition(ElevatorState state){
 		switch(state) {
 		case TOP:
-			setPosition((12 * 5.5) + 4.667);
+			setPosition((12 * 4.5) + 4.667);
 			break;
 		case SCALE_MAX:
-			setPosition(12 * 5);
-			break;
-		case SCALE_MED:
 			setPosition(12 * 4.5);
 			break;
-		case SCALE_LOW:
+		case SCALE_MED:
 			setPosition(12 * 4);
 			break;
+		case SCALE_LOW:
+			setPosition(12 * 3.5);
+			break;
 		case BOTTOM:
-			setPosition(3);
+			setPosition(0);
 			break;
 		case SWITCH:
 			setPosition(12 * 2);
@@ -114,11 +113,11 @@ public class Elevator extends Subsystem {
 
 	public void zero() {
 		elevatorMaster.setSelectedSensorPosition(0, Constants.PID_ID_X, Constants.TIMEOUT_MS);
-		setPosition(0);
+//		setPosition(ElevatorState.BOTTOM);
 	}
 
 	public boolean getLimitSwitch() {
-		return elevatorMaster.getSensorCollection().isRevLimitSwitchClosed();
+		return false;
 	}
 
 	public void log() {

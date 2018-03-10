@@ -15,6 +15,8 @@ public class Intake extends Subsystem {
 	private static final double K_INTAKE = 1504;
 	private final int LIFT_BIG_GEAR_TEETH = 60;
 	private final int LIFT_SMALL_GEAR_TEETH = 40;
+	
+	private double currentSetpoint = 0; 
 
 	private final TalonSRX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
 
@@ -43,14 +45,13 @@ public class Intake extends Subsystem {
 		liftMotor.config_kD(0, 0, Constants.TIMEOUT_MS);
 		liftMotor.config_kF(0, 0.35, Constants.TIMEOUT_MS);
 
-		liftMotor.configMotionAcceleration(500, Constants.TIMEOUT_MS);
-		liftMotor.configMotionCruiseVelocity(700, Constants.TIMEOUT_MS);
-		
+		liftMotor.configMotionAcceleration(300, Constants.TIMEOUT_MS);
+		liftMotor.configMotionCruiseVelocity(500, Constants.TIMEOUT_MS);
 		liftMotor.setInverted(true);
 		liftMotor.setSensorPhase(true);
-
+		liftMotor.overrideLimitSwitchesEnable(true);
+		liftMotor.configContinuousCurrentLimit(10, Constants.TIMEOUT_MS)
 		leftIntake.setInverted(true);
-		
 	}
 
 	private void setPosition(double revolutions) {
@@ -58,8 +59,8 @@ public class Intake extends Subsystem {
 	}
 
 	public void setIntakeRollers(double speed) {
-		if (speed <= 0) 
-			speed = 0.1;
+		if (Math.abs(speed) <= 0)
+			speed = 0.3;
 		leftIntake.set(ControlMode.PercentOutput, speed);
 		rightIntake.set(ControlMode.PercentOutput, speed);
 	}
@@ -76,12 +77,17 @@ public class Intake extends Subsystem {
 		grabSolenoid.set((grab) ? Value.kForward : Value.kReverse);
 	}
 	
+	public boolean isAtSetpoint() {
+		return Math.abs(liftMotor.getSelectedSensorPosition(0) - currentSetpoint) < 750;
+	}
+	
 	public double getLiftMotorEncoder() {
 		return liftMotor.getSelectedSensorPosition(0);
 	}
 
 	public void setAngle(double degrees) {
-		liftMotor.set(ControlMode.MotionMagic, (degrees/90) * K_INTAKE);
+		liftMotor.set(ControlMode.MotionMagic, (-(90-degrees)/90) * K_INTAKE);
+		currentSetpoint = (-(90-degrees)/90) * K_INTAKE;
 //		setPosition(((degrees / 360) * (LIFT_BIG_GEAR_TEETH / LIFT_SMALL_GEAR_TEETH)) * Constants.CTRE_ENCODER_TICKS_PER_REV);
 	}
 

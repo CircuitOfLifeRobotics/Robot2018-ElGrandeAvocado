@@ -27,7 +27,7 @@ public class RobotMap {
 
 		public static final PigeonIMU DRIVETRAIN_IMU = new PigeonIMU(LEFT_SLAVE_A);
 
-		public static final DoubleSolenoid SHIFT_SOLENOID = new DoubleSolenoid(4, 5);
+		public static final DoubleSolenoid SHIFT_SOLENOID = new DoubleSolenoid(0, 1);
 	}
 
 	public static final class IntakeMap {

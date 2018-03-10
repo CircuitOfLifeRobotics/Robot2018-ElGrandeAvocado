@@ -14,9 +14,12 @@ public class ShootCube extends CommandGroup{
 	}
 	
 	@Override
+	protected void initialize() {
+		
+	}
+	
+	@Override
 	protected void interrupted() {
-		Intake.getInstance().setGrabber(false);
-		Intake.getInstance().setIntakeRollers(0);
 	}
 	
 	@Override

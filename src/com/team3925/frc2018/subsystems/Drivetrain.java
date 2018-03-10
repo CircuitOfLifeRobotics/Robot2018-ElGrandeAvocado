@@ -22,7 +22,7 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 
 	public static Drivetrain instance;
 	private static boolean shiftState = true;
-	private static final boolean isGyroInverted = false;
+	private static final boolean isGyroInverted = false; 
 
 	private double kP = 0.2;
 	private double kI = 0;
@@ -43,6 +43,7 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setInverted(true);
 		
 		leftMaster.setSensorPhase(true);
+		rightMaster.setInverted(false);
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 
