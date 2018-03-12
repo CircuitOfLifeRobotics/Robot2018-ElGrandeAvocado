@@ -1,9 +1,8 @@
 package com.team3925.frc2018.commands;
 
-import com.team3925.frc2018.OI;
 import com.team3925.frc2018.subsystems.Elevator;
-import com.team3925.frc2018.subsystems.Intake;
 import com.team3925.frc2018.subsystems.Elevator.ElevatorState;
+import com.team3925.frc2018.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -28,6 +27,10 @@ public class RunElevator extends Command {
 	
 	@Override
 	protected void end() {
-		Intake.getInstance().setAngle(0);
+		if (Elevator.state == (ElevatorState.TOP)) {
+			Intake.getInstance().setAngle(45);
+		}else {
+			Intake.getInstance().setAngle(0);
+		}
 	}
 }

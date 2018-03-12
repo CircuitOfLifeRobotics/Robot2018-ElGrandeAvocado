@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class CenterSwitchAuto extends CommandGroup{
-	
-	public enum AutoSide{
-		LEFT,RIGHT
+public class LeftScaleAuto extends CommandGroup {
+
+	public enum AutoSide {
+		LEFT, RIGHT
 	}
-	
-	public CenterSwitchAuto(AutoSide side) {
+
+	public LeftScaleAuto() {
 		addParallel(new Command() {
 			
 			@Override
@@ -30,16 +30,9 @@ public class CenterSwitchAuto extends CommandGroup{
 			}
 		});
 		addParallel(new CloseGrabbers());
-		if (side.equals(AutoSide.LEFT)) {
-			addSequential(new MotionProfileCommand("CENTER_LEFTSWITCH"));
-		}else if (side.equals(AutoSide.RIGHT)){
-			addSequential(new MotionProfileCommand("CENTER_RIGHTSWITCH"));
-		}
-		addSequential(new WaitCommand(4));
-		addParallel(new RunElevator(ElevatorState.SWITCH));
-		addSequential(new OpenGrabbers());
-		addSequential(new RunIntakeWheels(-0.25));
+		addParallel(new RunElevator(ElevatorState.SCALE_MAX));
+		addSequential(new MotionProfileCommand("LEFT_LEFTSCALE"));
+		addSequential(new RunIntakeWheels(-1));
 	}
 
 }
-

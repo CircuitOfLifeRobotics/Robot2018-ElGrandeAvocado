@@ -142,7 +142,11 @@ public class OI implements DriveManualInput {
 			
 			@Override
 			protected boolean isFinished() {
-				return Intake.getInstance().isAtSetpoint();
+				if(Elevator.state == ElevatorState.BOTTOM) {
+					return Intake.getInstance().isAtSetpoint();
+				}else {
+					return true;
+				}
 			}
 		});
 		shootCube.whenInactive(new Command() {
@@ -150,7 +154,9 @@ public class OI implements DriveManualInput {
 			@Override
 			protected void initialize() {
 				Intake.getInstance().setIntakeRollers(0);
-				Intake.getInstance().setAngle(85);
+				if (Elevator.state == ElevatorState.BOTTOM) {
+					Intake.getInstance().setAngle(85);
+				}
 			}
 			@Override
 			protected boolean isFinished() {

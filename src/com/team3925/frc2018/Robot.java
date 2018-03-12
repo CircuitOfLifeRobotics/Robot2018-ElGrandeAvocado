@@ -8,6 +8,7 @@ import com.team3925.frc2018.commands.ZeroIntake;
 import com.team3925.frc2018.commands.autos.CenterSwitchAuto;
 import com.team3925.frc2018.commands.autos.CenterSwitchAuto.AutoSide;
 import com.team3925.frc2018.commands.autos.DriveForwardAuto;
+import com.team3925.frc2018.commands.autos.LeftScaleAuto;
 import com.team3925.frc2018.subsystems.Drivetrain;
 import com.team3925.frc2018.subsystems.Elevator;
 import com.team3925.frc2018.subsystems.Intake;
@@ -31,7 +32,7 @@ public class Robot extends IterativeRobot {
 	Command zeroIntake;
 	UsbCamera camera;
 	SendableChooser<String> autoSelector;
-	boolean isElevatorZeroed = false;
+	private static boolean isElevatorZeroed;
 
 	@Override
 	public void robotInit() {
@@ -45,27 +46,30 @@ public class Robot extends IterativeRobot {
 		camera.setFPS(12);
 		autoSelector.addDefault("Drive Forward", "DriveForward");
 		autoSelector.addObject("CenterSwitch", "Center");
+		autoSelector.addObject("Left Scale", "LeftScale");
 		SmartDashboard.putData("Auto", autoSelector);
 		isElevatorZeroed = false;
 	}
 
 	@Override
 	public void autonomousInit() {
-		isElevatorZeroed = true;
+		Intake.getInstance().setIntakeRollers(0.25);
 		Elevator.getInstance().zero();
 		Intake.getInstance().zeroLift();
 		testAuto = new DriveForwardAuto();
+		System.out.println(DriverStation.getInstance().getGameSpecificMessage().charAt(0));
 		if (autoSelector.getSelected().equals("DriveForward")) {
 			testAuto = new DriveForwardAuto();
 		}else if(autoSelector.getSelected().equals("Center")){
 			if (DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'L') {
 				testAuto = new CenterSwitchAuto(AutoSide.LEFT);
-				System.out.println("RUNnningLEFt");
 			}else if(DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R') {
 				testAuto = new CenterSwitchAuto(AutoSide.RIGHT);
 			}
 		}
+		testAuto = new LeftScaleAuto();
 		testAuto.start();
+		isElevatorZeroed = true;
 	}
 
 	@Override
@@ -73,12 +77,13 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		if (!isElevatorZeroed) {
+		if (isElevatorZeroed == false) {
 			Elevator.getInstance().zero();
 			Intake.getInstance().zeroLift();
+			System.out.println("ZeroCalled");
 		}
 		drive.start();
-		Intake.getInstance().setIntakeRollers(0.3);
+		Intake.getInstance().setIntakeRollers(0.25);
 //		Elevator.getInstance().setPosition(ElevatorState.BOTTOM);
 //		Intake.getInstance().zeroLift();
 	}
@@ -98,6 +103,5 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void disabledInit() {
-		isElevatorZeroed = false;
 	}
 }

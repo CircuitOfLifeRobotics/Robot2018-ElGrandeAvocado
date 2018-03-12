@@ -1,10 +1,7 @@
 package com.team3925.frc2018;
 
-import com.team3925.frc2018.subsystems.Drivetrain;
-import com.team3925.utils.SendablePIDTuner;
-
 public class Logger {
-	SendablePIDTuner drivetrainTuner;
+//	SendablePIDTuner drivetrainTuner;
 	
 	private static Logger instance;
 	public static Logger getInstance() {
@@ -14,9 +11,9 @@ public class Logger {
 	}
 	
 	private Logger() {
-		drivetrainTuner = new SendablePIDTuner(Drivetrain.getInstance(), Drivetrain.getInstance());
+//		drivetrainTuner = new SendablePIDTuner(Drivetrain.getInstance(), Drivetrain.getInstance());
 	}
 	public void update() {
-		drivetrainTuner.updateDashboard();
+//		drivetrainTuner.updateDashboard();
 	}
 }

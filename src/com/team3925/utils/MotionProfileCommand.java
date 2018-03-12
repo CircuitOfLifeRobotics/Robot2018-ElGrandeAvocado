@@ -30,8 +30,8 @@ public class MotionProfileCommand extends Command {
 	// TUNE THESE VALUES
 	public static double kP = 0.3; // 0.5
 	public static double kV = 0.5;
-	public static double kA = 0.2; // 0.07
-	public static double kG = 0.3; // 0.5
+	public static double kA = 0.3; // 0.07
+	public static double kG = 0.5; // 0.5
 
 	public static final double MAX_VEL = 12;
 	public static final double MAX_ACL = 24;

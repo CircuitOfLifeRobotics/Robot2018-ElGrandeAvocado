@@ -45,12 +45,11 @@ public class Intake extends Subsystem {
 		liftMotor.config_kD(0, 0, Constants.TIMEOUT_MS);
 		liftMotor.config_kF(0, 0.35, Constants.TIMEOUT_MS);
 
-		liftMotor.configMotionAcceleration(300, Constants.TIMEOUT_MS);
-		liftMotor.configMotionCruiseVelocity(500, Constants.TIMEOUT_MS);
+		liftMotor.configMotionAcceleration(400, Constants.TIMEOUT_MS);
+		liftMotor.configMotionCruiseVelocity(600, Constants.TIMEOUT_MS);
 		liftMotor.setInverted(true);
 		liftMotor.setSensorPhase(true);
 		liftMotor.overrideLimitSwitchesEnable(true);
-		liftMotor.configContinuousCurrentLimit(10, Constants.TIMEOUT_MS)
 		leftIntake.setInverted(true);
 	}
 
@@ -60,7 +59,7 @@ public class Intake extends Subsystem {
 
 	public void setIntakeRollers(double speed) {
 		if (Math.abs(speed) <= 0)
-			speed = 0.3;
+			speed = 0.25;
 		leftIntake.set(ControlMode.PercentOutput, speed);
 		rightIntake.set(ControlMode.PercentOutput, speed);
 	}
