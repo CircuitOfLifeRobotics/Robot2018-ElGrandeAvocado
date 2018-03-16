@@ -10,6 +10,7 @@ import com.team3925.frc2018.commands.RunElevator;
 import com.team3925.frc2018.commands.RunIntakeWheels;
 import com.team3925.frc2018.commands.ShiftHigh;
 import com.team3925.frc2018.commands.ShiftLow;
+import com.team3925.frc2018.commands.ShootCube;
 import com.team3925.frc2018.subsystems.Elevator;
 import com.team3925.frc2018.subsystems.Elevator.ElevatorState;
 import com.team3925.frc2018.subsystems.Intake;
@@ -126,29 +127,7 @@ public class OI implements DriveManualInput {
 		jogElevatorBottom.whenPressed(new RunElevator(ElevatorState.BOTTOM));
 
 		dropCube.whenActive(new DropCube());
-		shootCube.whileActive(new Command() {
-			@Override
-			protected void initialize() {
-				Intake.getInstance().setAngle(0);
-			}
-			@Override
-			protected void execute() {
-			}
-			
-			@Override
-			protected void end() {
-				Intake.getInstance().setIntakeRollers(-1);
-			}
-			
-			@Override
-			protected boolean isFinished() {
-				if(Elevator.state == ElevatorState.BOTTOM) {
-					return Intake.getInstance().isAtSetpoint();
-				}else {
-					return true;
-				}
-			}
-		});
+		shootCube.whileActive(new ShootCube());
 		shootCube.whenInactive(new Command() {
 			
 			@Override

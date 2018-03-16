@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
 
-import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,8 +16,6 @@ public class Elevator extends Subsystem {
 	}
 
 	private final TalonSRX elevatorMaster = RobotMap.ElevatorMap.MASTER;
-
-	private static final double K_ELEVATOR = 1176.48;
 
 	public static final double TELEOP_ELEVATOR_INCREMENT = 8;
 	
@@ -31,10 +28,6 @@ public class Elevator extends Subsystem {
 
 	private static final int MOTION_MAGIC_ACCELERATION = 9001;
 	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467;
-	// private static final int MOTION_MAGIC_ACCELERATION = 9001;
-	// private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467;
-	// private static final int MOTION_MAGIC_ACCELERATION = 20594;
-	// private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467;
 
 	private static final double MAX_SCALE_HEIGHT = 77000;//78900
 	public static double elevatorHeight = 0;
@@ -86,34 +79,12 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setPosition(double inches) {
-		// elevatorMaster.set(ControlMode.Position, (inches * K_ELEVATOR));
-//		elevatorMaster.set(ControlMode.MotionMagic, (Math.min(inches, MAX_SCALE_HEIGHT) * K_ELEVATOR));
 		 elevatorMaster.set(ControlMode.MotionMagic, inches);
 		elevatorHeight = inches;
 	}
 
 	public void setPosition(ElevatorState state) {
-		this.state = state;
-		// switch(state) {
-		// case TOP:
-		// setPosition((12 * 4.5) + 4.667);
-		// break;
-		// case SCALE_MAX:
-		// setPosition(12 * 4.5);
-		// break;
-		// case SCALE_MED:
-		// setPosition(12 * 4);
-		// break;
-		// case SCALE_LOW:
-		// setPosition(12 * 3.5);
-		// break;
-		// case BOTTOM:
-		// setPosition(0);
-		// break;
-		// case SWITCH:
-		// setPosition(12 * 2);
-		// break;
-		// }
+		Elevator.state = state;
 		switch (state) {
 		case TOP:
 			setPosition(MAX_SCALE_HEIGHT);
@@ -133,6 +104,8 @@ public class Elevator extends Subsystem {
 		case SWITCH:
 			setPosition(40000);
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -142,7 +115,6 @@ public class Elevator extends Subsystem {
 
 	public void zero() {
 		elevatorMaster.setSelectedSensorPosition(0, Constants.PID_ID_X, Constants.TIMEOUT_MS);
-		// setPosition(ElevatorState.BOTTOM);
 	}
 
 	public boolean getLimitSwitch() {

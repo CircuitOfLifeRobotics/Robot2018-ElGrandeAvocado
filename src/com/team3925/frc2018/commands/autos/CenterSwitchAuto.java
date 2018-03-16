@@ -15,11 +15,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class CenterSwitchAuto extends CommandGroup{
 	
-	public enum AutoSide{
-		LEFT,RIGHT
-	}
-	
-	public CenterSwitchAuto(AutoSide side) {
+	public CenterSwitchAuto(char side) {
 		addParallel(new Command() {
 			
 			@Override
@@ -30,9 +26,9 @@ public class CenterSwitchAuto extends CommandGroup{
 			}
 		});
 		addParallel(new CloseGrabbers());
-		if (side.equals(AutoSide.LEFT)) {
+		if (side == 'L' || side == 'l') {
 			addSequential(new MotionProfileCommand("CENTER_LEFTSWITCH"));
-		}else if (side.equals(AutoSide.RIGHT)){
+		}else if (side == 'R' || side == 'r'){
 			addSequential(new MotionProfileCommand("CENTER_RIGHTSWITCH"));
 		}
 		addSequential(new WaitCommand(4));

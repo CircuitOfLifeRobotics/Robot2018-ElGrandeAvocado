@@ -21,10 +21,8 @@ public class LeftScaleAuto extends CommandGroup {
 
 	public LeftScaleAuto() {
 		addParallel(new Command() {
-			
 			@Override
 			protected boolean isFinished() {
-				// TODO Auto-generated method stub
 				Intake.getInstance().setIntakeRollers(0.25);
 				return true;
 			}
