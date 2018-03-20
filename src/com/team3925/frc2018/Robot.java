@@ -1,14 +1,12 @@
 package com.team3925.frc2018;
 
 import com.team3925.frc2018.commands.DriveManual;
-import com.team3925.frc2018.commands.RunElevator;
-import com.team3925.frc2018.commands.RunElevatorRaw;
-import com.team3925.frc2018.commands.RunIntakeLiftRaw;
-import com.team3925.frc2018.commands.ZeroIntake;
 import com.team3925.frc2018.commands.autos.CenterSwitchAuto;
 import com.team3925.frc2018.commands.autos.DriveForwardAuto;
+import com.team3925.frc2018.subsystems.Arm;
 import com.team3925.frc2018.subsystems.Elevator;
 import com.team3925.frc2018.subsystems.Intake;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -20,10 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 	DriveManual drive;
-	RunElevator elevate;
-	RunElevatorRaw elevateRaw;
-	RunIntakeLiftRaw liftRaw;
-	Command testAuto;
+	Command auto;
 	Command zeroIntake;
 	UsbCamera camera;
 	SendableChooser<String> autoSelector;
@@ -32,10 +27,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		drive = new DriveManual(OI.getInstance());
-		elevateRaw = new RunElevatorRaw();
-		liftRaw = new RunIntakeLiftRaw();
-		zeroIntake = new ZeroIntake();
-		
+
 		//Camera:
 		camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(320, 240);
@@ -53,21 +45,18 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		Intake.getInstance().setIntakeRollers(0.25); //Hold da shit
-		
 		//Zero subsystems:
-		Elevator.getInstance().zero();
-		Intake.getInstance().zeroLift();
+		zero();
 		
 		//Sets the default case:
-		testAuto = new DriveForwardAuto();
+		auto = new DriveForwardAuto();
 		
 		if (autoSelector.getSelected().equals("DriveForward")) {
-			testAuto = new DriveForwardAuto();
+			auto = new DriveForwardAuto();
 		}else if(autoSelector.getSelected().equals("Center")){
-			testAuto = new CenterSwitchAuto(DriverStation.getInstance().getGameSpecificMessage().charAt(0));
+			auto = new CenterSwitchAuto(DriverStation.getInstance().getGameSpecificMessage().charAt(0));
 		}
-		testAuto.start();
+		auto.start();
 		isElevatorZeroed = true;
 	}
 
@@ -77,19 +66,15 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		if (isElevatorZeroed == false) {
-			Elevator.getInstance().zero();
-			Intake.getInstance().zeroLift();
+			zero();
 			System.out.println("ZeroCalled");
 		}
 		drive.start();
-		Intake.getInstance().setIntakeRollers(0.25);
 	}
-
-	@Override
-	public void teleopPeriodic() {
-		if (Elevator.getInstance().getLimitSwitch()) {
-			Elevator.getInstance().zero();
-		}
+	
+	private void zero() {
+		Elevator.getInstance().zero();
+		Arm.getInstance().zero();
 	}
 
 	@Override

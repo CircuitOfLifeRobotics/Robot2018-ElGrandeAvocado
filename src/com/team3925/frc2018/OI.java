@@ -1,19 +1,13 @@
 package com.team3925.frc2018;
 
-import com.team3925.frc2018.commands.CloseGrabbers;
-import com.team3925.frc2018.commands.DecrementAdjustElevator;
 import com.team3925.frc2018.commands.DriveManual.DriveManualInput;
-import com.team3925.frc2018.commands.DropCube;
-import com.team3925.frc2018.commands.IncrementAdjustElevator;
-import com.team3925.frc2018.commands.OpenGrabbers;
-import com.team3925.frc2018.commands.RunElevator;
-import com.team3925.frc2018.commands.RunIntakeWheels;
+import com.team3925.frc2018.commands.SetSuperStructureState;
 import com.team3925.frc2018.commands.ShiftHigh;
 import com.team3925.frc2018.commands.ShiftLow;
-import com.team3925.frc2018.commands.ShootCube;
+import com.team3925.frc2018.subsystems.Arm.ArmState;
 import com.team3925.frc2018.subsystems.Elevator;
 import com.team3925.frc2018.subsystems.Elevator.ElevatorState;
-import com.team3925.frc2018.subsystems.Intake;
+import com.team3925.frc2018.subsystems.Intake.IntakeState;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -40,7 +34,6 @@ public class OI implements DriveManualInput {
 	private Trigger dropCube;
 	private Trigger shootCube;
 	private Button intakeCube;
-	private Button openIntake;
 
 	private Trigger tuneUp;
 	private Trigger tuneDown;
@@ -65,7 +58,6 @@ public class OI implements DriveManualInput {
 
 		drivetrain_Shift = new JoystickButton(wheel, 5);
 
-		openIntake = new JoystickButton(xbox, 5);
 		intakeCube = new JoystickButton(xbox, 6);
 
 		dropCube = new Trigger() {
@@ -98,85 +90,40 @@ public class OI implements DriveManualInput {
 			}
 		};
 
-		Trigger zeroElevator = new Trigger() {
 
-			@Override
-			public boolean get() {
-				return Elevator.getInstance().getLimitSwitch();
-			}
-		};
+		jogElevatorTop.whenPressed(new SetSuperStructureState(ElevatorState.TOP, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
+		jogElevatorScaleHigh.whenPressed(new SetSuperStructureState(ElevatorState.SCALE_MAX, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
+		jogElevatorScaleMiddle.whenPressed(new SetSuperStructureState(ElevatorState.SCALE_MED, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
+		jogElevatorScaleLow.whenPressed(new SetSuperStructureState(ElevatorState.SCALE_LOW, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
+		jogElevatorSwitch.whenPressed(new SetSuperStructureState(ElevatorState.SWITCH, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
+		jogElevatorBottom.whenPressed(new SetSuperStructureState(ElevatorState.BOTTOM, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
 
-		zeroElevator.whenActive(new Command (){
-			
-			@Override
-			protected void initialize() {
-				Elevator.getInstance().zero();
-			}
-			
-			@Override
-			protected boolean isFinished() {
-				return true;
-			}
-		});
-
-		jogElevatorTop.whenPressed(new RunElevator(ElevatorState.TOP));
-		jogElevatorScaleHigh.whenPressed(new RunElevator(ElevatorState.SCALE_MAX));
-		jogElevatorScaleMiddle.whenPressed(new RunElevator(ElevatorState.SCALE_MED));
-		jogElevatorScaleLow.whenPressed(new RunElevator(ElevatorState.SCALE_LOW));
-		jogElevatorSwitch.whenPressed(new RunElevator(ElevatorState.SWITCH));
-		jogElevatorBottom.whenPressed(new RunElevator(ElevatorState.BOTTOM));
-
-		dropCube.whenActive(new DropCube());
-		shootCube.whileActive(new ShootCube());
-		shootCube.whenInactive(new Command() {
-			
-			@Override
-			protected void initialize() {
-				Intake.getInstance().setIntakeRollers(0);
-				if (Elevator.state == ElevatorState.BOTTOM) {
-					Intake.getInstance().setAngle(85);
-				}
-			}
-			@Override
-			protected boolean isFinished() {
-				return true;
-			}
-		});
+		dropCube.whenActive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.DROP));
+		shootCube.whileActive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.SHOOT));
+		shootCube.whenInactive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.SHOOT));
 
 		drivetrain_Shift.whenPressed(new ShiftLow());
 		drivetrain_Shift.whenReleased(new ShiftHigh());
 
-		openIntake.whenPressed(new OpenGrabbers());
-		openIntake.whenReleased(new CloseGrabbers());
+		intakeCube.whenPressed(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.FORWARD_EXTENDED, IntakeState.INTAKE));
+		intakeCube.whenReleased(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.RETRACTED, IntakeState.HOLD));
 
-		intakeCube.whenPressed(new RunIntakeWheels(1));
-		intakeCube.whenPressed(new Command() {
-			
-			@Override
-			protected void initialize() {
-				Intake.getInstance().setAngle(0);
-			}
-			@Override
-			protected boolean isFinished() {
-				return true;
-			}
-		});
-		intakeCube.whenReleased(new RunIntakeWheels(0));
-		intakeCube.whenInactive(new Command() {
-			
-			@Override
-			protected void initialize() {
-				Intake.getInstance().setAngle(85);
-			}
+		tuneUp.whenActive(new Command() {
 			
 			@Override
 			protected boolean isFinished() {
+				Elevator.getInstance().incrementHeight();
 				return true;
 			}
 		});
-
-		tuneUp.whenActive(new IncrementAdjustElevator());
-		tuneDown.whenActive(new DecrementAdjustElevator());
+		tuneDown.whenActive(new Command() {
+			
+			@Override
+			protected boolean isFinished() {
+				Elevator.getInstance().decrementHeight();
+				return true;
+			}
+		});
 	}
 
 	@Override
