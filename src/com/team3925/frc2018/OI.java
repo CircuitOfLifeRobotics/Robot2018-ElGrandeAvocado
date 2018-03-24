@@ -8,6 +8,7 @@ import com.team3925.frc2018.commands.TuneElevator;
 import com.team3925.frc2018.subsystems.Arm.ArmState;
 import com.team3925.frc2018.subsystems.Elevator;
 import com.team3925.frc2018.subsystems.Elevator.ElevatorState;
+import com.team3925.frc2018.subsystems.Intake;
 import com.team3925.frc2018.subsystems.Intake.IntakeState;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -34,6 +35,7 @@ public class OI implements DriveManualInput {
 	private Button jogElevatorBottom;
 	private Trigger dropCube;
 	private Trigger shootCube;
+	private Trigger shootBack;
 	private Button intakeCube;
 
 	private Trigger tuneUp;
@@ -67,6 +69,13 @@ public class OI implements DriveManualInput {
 				return xbox.getPOV() == 180;
 			}
 		};
+		
+		shootBack = new Trigger() {
+			@Override
+			public boolean get() {
+				return xbox.getPOV() == 90;
+			}
+		};
 
 		shootCube = new Trigger() {
 
@@ -92,13 +101,15 @@ public class OI implements DriveManualInput {
 		};
 
 
-		jogElevatorTop.whenPressed(new SetSuperStructureState(ElevatorState.TOP, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
+		jogElevatorTop.whenPressed(new SetSuperStructureState(ElevatorState.TOP, ArmState.SCALE_ANGLE, IntakeState.HOLD));
 		jogElevatorScaleHigh.whenPressed(new SetSuperStructureState(ElevatorState.SCALE_MAX, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
 		jogElevatorScaleMiddle.whenPressed(new SetSuperStructureState(ElevatorState.SCALE_MED, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
 		jogElevatorScaleLow.whenPressed(new SetSuperStructureState(ElevatorState.SCALE_LOW, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
 		jogElevatorSwitch.whenPressed(new SetSuperStructureState(ElevatorState.SWITCH, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
-		jogElevatorBottom.whenPressed(new SetSuperStructureState(ElevatorState.BOTTOM, ArmState.FORWARD_EXTENDED, IntakeState.HOLD));
-
+		jogElevatorBottom.whenPressed(new SetSuperStructureState(ElevatorState.BOTTOM, ArmState.RETRACTED, IntakeState.HOLD));
+		
+		shootBack.whenActive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.REVERSE_EXTENDED, IntakeState.SHOOT));
+		shootBack.whenInactive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.RETRACTED, IntakeState.HOLD));
 		dropCube.whenActive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.DROP));
 		shootCube.whileActive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.SHOOT));
 		shootCube.whenInactive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.SHOOT));

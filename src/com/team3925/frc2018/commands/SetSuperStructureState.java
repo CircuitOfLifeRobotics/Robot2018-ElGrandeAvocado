@@ -1,5 +1,6 @@
 package com.team3925.frc2018.commands;
 
+import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.subsystems.Arm;
 import com.team3925.frc2018.subsystems.Arm.ArmState;
 import com.team3925.frc2018.subsystems.Elevator;
@@ -17,6 +18,7 @@ public class SetSuperStructureState extends Command {
 
 	boolean armDone;
 	boolean intakeDone;
+	boolean elevatorDone;
 
 	public SetSuperStructureState(ElevatorState elevatorState, ArmState armState, IntakeState intakeState) {
 		requires(Elevator.getInstance());
@@ -33,13 +35,21 @@ public class SetSuperStructureState extends Command {
 
 	@Override
 	protected void initialize() {
-		Elevator.getInstance().setPosition(elevatorState);
 		armDone = false;
 		intakeDone = false;
+		System.out.println("Started");
 	}
 
 	@Override
 	protected void execute() {
+		if (Elevator.getInstance().positionAtState(elevatorState) <= Constants.ElevatorSetpoints.DEPLOY_HEIGHT) {
+			if (Arm.getInstance().safeToGoDown()) {
+				Elevator.getInstance().setPosition(elevatorState);
+				elevatorDone = true;
+			}
+		}else {
+			Elevator.getInstance().setPosition(elevatorState);
+		}
 		if (armState == ArmState.REVERSE_EXTENDED) {
 			if (Elevator.getInstance().safeToDeployBackwards()) {
 				Arm.getInstance().setSetpoint(armState);
@@ -68,7 +78,12 @@ public class SetSuperStructureState extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return (armDone && intakeDone);
+		return (armDone && intakeDone && elevatorDone);
+	}
+	
+	@Override
+	protected void end() {
+		System.out.println("Finished");
 	}
 
 }

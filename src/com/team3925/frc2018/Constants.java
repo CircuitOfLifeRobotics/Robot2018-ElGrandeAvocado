@@ -13,14 +13,14 @@ public class Constants {
 		public static final int SCALE_LOW = 54297;
 		public static final int SWITCH = 40000;
 		public static final int BOTTOM = 0;
-		public static final int DEPLOY_HEIGHT = 0; //TODO: Measure this
+		public static final int DEPLOY_HEIGHT = 36000; //TODO: Measure this
 	}
 	
 	public static class ArmSetpoints {
-		public static final double EXTENDED = 0;
-		public static final double RETRACTED = 90;
-		public static final double BACKWARDS = 135;
-		public static final double SCALEASSIST = 45;
+		public static final double EXTENDED = -2770;
+		public static final double RETRACTED = -180;
+		public static final double BACKWARDS = 500;
+		public static final double SCALEASSIST = -1805;
 	}
 	
 	public static class IntakeSetpoints {

@@ -55,19 +55,19 @@ public class Intake extends Subsystem {
 
 	private void setGrabberState(IntakeGrabberState state) {
 		this.grabState = state;
-		switch (state) {
-		case OPEN:
-			grabSolenoid.set(Value.kForward);
-			springSolenoid.set(Value.kForward);
-		case INTAKE:
-			grabSolenoid.set(Value.kReverse);
-			springSolenoid.set(Value.kForward);
-		case CLOSED:
-			grabSolenoid.set(Value.kReverse);
-			springSolenoid.set(Value.kForward);
-		default:
-			
-		}
+//		switch (state) {
+//		case OPEN:
+//			grabSolenoid.set(Value.kForward);
+//			springSolenoid.set(Value.kForward);
+//		case INTAKE:
+//			grabSolenoid.set(Value.kReverse);
+//			springSolenoid.set(Value.kForward);
+//		case CLOSED:
+//			grabSolenoid.set(Value.kReverse);
+//			springSolenoid.set(Value.kForward);
+//		default:
+//			
+//		}
 	}
 
 	private void setRollerState(IntakeRollerState state) {

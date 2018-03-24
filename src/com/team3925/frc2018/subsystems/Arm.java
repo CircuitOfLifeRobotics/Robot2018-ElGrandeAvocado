@@ -16,16 +16,15 @@ public class Arm extends Subsystem {
 	
 	//***** TUNE ME! *****
 	private static final double kP = 3.00;
-	private static final double kI = 0.01;
+	private static final double kI = 0.00;
 	private static final double kD = 0.00;
 	private static final double kF = 0.35;
 	
-	private static final int ACCELERATION = 400;
-	private static final int VELOCITY = 600;
+	private static final int ACCELERATION = 1500; // 400
+	private static final int VELOCITY = 3000; //600
 	
 	private static final int SETPOINT_DEADZONE = 750;
 	
-	private static final double K_INTAKE = 1504;
 	//*********************
 	
 	private static ArmState state = ArmState.UNKNOWN;
@@ -56,13 +55,17 @@ public class Arm extends Subsystem {
 		liftMotor.configMotionCruiseVelocity(VELOCITY, Constants.TIMEOUT_MS);
 		
 		liftMotor.setInverted	(true);
-		liftMotor.setSensorPhase(true);
+		liftMotor.setSensorPhase(false);
 		liftMotor.overrideLimitSwitchesEnable(true);
 	}
 	
 	@Deprecated
 	public void setRaw(double speed) {
 		liftMotor.set(ControlMode.PercentOutput, speed);
+	}
+	
+	public double getPosition() {
+		return liftMotor.getSelectedSensorPosition(0);
 	}
 	
 	public boolean isAtSetpoint() {
@@ -78,15 +81,42 @@ public class Arm extends Subsystem {
 		switch (state) {
 		case FORWARD_EXTENDED:
 			setSetpoint(Constants.ArmSetpoints.EXTENDED);
+			break;
 		case RETRACTED:
 			setSetpoint(Constants.ArmSetpoints.RETRACTED);
+			break;
 		case REVERSE_EXTENDED:
 			setSetpoint(Constants.ArmSetpoints.BACKWARDS);
+			break;
 		case SCALE_ANGLE:
 			setSetpoint(Constants.ArmSetpoints.SCALEASSIST);
+			break;
 		default:
 			System.err.println("Failed to set " + state);
 		}
+	}
+	
+	public double positionAtState(ArmState state) {
+		switch (state) {
+		case FORWARD_EXTENDED:
+			return (Constants.ArmSetpoints.EXTENDED);
+		case RETRACTED:
+			return (Constants.ArmSetpoints.RETRACTED);
+		case REVERSE_EXTENDED:
+			return (Constants.ArmSetpoints.BACKWARDS);
+		case SCALE_ANGLE:
+			return (Constants.ArmSetpoints.SCALEASSIST);
+		default:
+			System.err.println("Failed to get " + state);
+			return 0;
+		}
+	}
+	
+	public boolean safeToGoDown() {
+		if (liftMotor.getSelectedSensorPosition(0) >= Constants.ArmSetpoints.RETRACTED) {
+			return false;
+		}
+		return true;
 	}
 	
 	public ArmState getState() {
@@ -94,7 +124,7 @@ public class Arm extends Subsystem {
 	}
 	
 	public void setSetpoint(double setpoint) {
-		liftMotor.set(ControlMode.MotionMagic, K_INTAKE * setpoint);
+		liftMotor.set(ControlMode.MotionMagic, setpoint);
 		currentSetpoint = setpoint;
 	}
 	

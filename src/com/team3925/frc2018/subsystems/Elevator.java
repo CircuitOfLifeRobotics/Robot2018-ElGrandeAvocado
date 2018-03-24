@@ -25,10 +25,10 @@ public class Elevator extends Subsystem {
 	private static final double kD = 0;
 	private static final double kF = 0.35;
 
-	private static final int MOTION_MAGIC_ACCELERATION = 9001;
-	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 5467;
+	private static final int MOTION_MAGIC_ACCELERATION = 7000;
+	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 9000;
 
-	private static final double MAX_SCALE_HEIGHT = 77000;
+	private static final double MAX_SCALE_HEIGHT = 71805;
 	
 	private static final double TELEOP_ELEVATOR_INCREMENT = 8;
 	
@@ -46,9 +46,11 @@ public class Elevator extends Subsystem {
 	}
 
 	public Elevator() {
-		elevatorMaster.setInverted(true);
-		RobotMap.ElevatorMap.SLAVE_A.setInverted(true);
-		elevatorMaster.setSensorPhase(true);
+		elevatorMaster.setInverted(false);
+		RobotMap.ElevatorMap.SLAVE_A.setInverted(false);
+		RobotMap.ElevatorMap.SLAVE_B.setInverted(true);
+		RobotMap.ElevatorMap.SLAVE_C.setInverted(true);
+		elevatorMaster.setSensorPhase(false);
 		elevatorMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.PID_ID_X,
 				Constants.TIMEOUT_MS);
 
@@ -79,6 +81,10 @@ public class Elevator extends Subsystem {
 	public void setRaw(double speed) {
 		elevatorMaster.set(ControlMode.PercentOutput, speed);
 	}
+	
+	public TalonSRX getMaster() {
+		return elevatorMaster;
+	}
 
 	private void setPosition(double inches) {
 		elevatorMaster.set(ControlMode.MotionMagic, inches);
@@ -92,19 +98,50 @@ public class Elevator extends Subsystem {
 			setPosition(MAX_SCALE_HEIGHT);
 		case SCALE_MAX:
 			setPosition(Constants.ElevatorSetpoints.SCALE_TOP);
+			break;
 		case SCALE_MED:
 			setPosition(Constants.ElevatorSetpoints.SCALE_MED); // 66301
+			break;
 		case SCALE_LOW:
 			setPosition(Constants.ElevatorSetpoints.SCALE_LOW);
+			break;
 		case BOTTOM:
 			setPosition(Constants.ElevatorSetpoints.BOTTOM);
+			break;
 		case SWITCH:
 			setPosition(Constants.ElevatorSetpoints.SWITCH);
+			break;
 		case UNKNOWN:
 			break;
 		default:
 			System.err.println("Failed to set elevatorstate " + state);
 		}
+	}
+	
+	public double positionAtState(ElevatorState state) {
+		switch (state) {
+		case TOP:
+			return (MAX_SCALE_HEIGHT);
+		case SCALE_MAX:
+			return (Constants.ElevatorSetpoints.SCALE_TOP);
+		case SCALE_MED:
+			return (Constants.ElevatorSetpoints.SCALE_MED); // 66301
+		case SCALE_LOW:
+			return (Constants.ElevatorSetpoints.SCALE_LOW);
+		case BOTTOM:
+			return (Constants.ElevatorSetpoints.BOTTOM);
+		case SWITCH:
+			return (Constants.ElevatorSetpoints.SWITCH);
+		case UNKNOWN:
+			return 0;
+		default:
+			System.err.println("Failed to set elevatorstate " + state);
+			return 0;
+		}
+	}
+	
+	public double getElevatorHeight() {
+		return elevatorMaster.getSelectedSensorPosition(0);
 	}
 	
 	public boolean safeToDeployBackwards() {

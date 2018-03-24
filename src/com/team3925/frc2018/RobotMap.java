@@ -45,8 +45,11 @@ public class RobotMap {
 
 	public static final class ElevatorMap {
 		public static final WPI_TalonSRX MASTER = CTREControllerFactory.createDefaultTalon(9);
-		public static final WPI_VictorSPX SLAVE_A = CTREControllerFactory.createPermanentSlaveVictor(10, MASTER);
-		public static final WPI_TalonSRX SLAVE_B = CTREControllerFactory.createPermanentSlaveTalon(8, MASTER);
-		public static final WPI_VictorSPX SLAVE_C = CTREControllerFactory.createPermanentSlaveVictor(7, MASTER);
+//		public static final WPI_TalonSRX SLAVE_A = CTREControllerFactory.createDefaultTalon(10);
+//		public static final WPI_TalonSRX SLAVE_B = CTREControllerFactory.createDefaultTalon(8);
+//		public static final WPI_TalonSRX SLAVE_C = CTREControllerFactory.createDefaultTalon(7);
+		public static final WPI_VictorSPX SLAVE_A = CTREControllerFactory.createPermanentSlaveVictor(10, MASTER); //flipped
+		public static final WPI_TalonSRX SLAVE_B = CTREControllerFactory.createPermanentSlaveTalon(7, MASTER); //flipped
+		public static final WPI_VictorSPX SLAVE_C = CTREControllerFactory.createPermanentSlaveVictor(8, MASTER);//flipped
 	}
 }
