@@ -90,25 +90,28 @@ public class Elevator extends Subsystem {
 		switch (state) {
 		case TOP:
 			setPosition(MAX_SCALE_HEIGHT);
-			break;
 		case SCALE_MAX:
 			setPosition(Constants.ElevatorSetpoints.SCALE_TOP);
-			break;
 		case SCALE_MED:
 			setPosition(Constants.ElevatorSetpoints.SCALE_MED); // 66301
-			break;
 		case SCALE_LOW:
 			setPosition(Constants.ElevatorSetpoints.SCALE_LOW);
-			break;
 		case BOTTOM:
 			setPosition(Constants.ElevatorSetpoints.BOTTOM);
-			break;
 		case SWITCH:
 			setPosition(Constants.ElevatorSetpoints.SWITCH);
+		case UNKNOWN:
 			break;
 		default:
-			break;
+			System.err.println("Failed to set elevatorstate " + state);
 		}
+	}
+	
+	public boolean safeToDeployBackwards() {
+		if (elevatorMaster.getSelectedSensorPosition(0) >= Constants.ElevatorSetpoints.DEPLOY_HEIGHT) {
+			return true;
+		}
+		return false;
 	}
 
 	public double getElevatorHeightPercentage() {

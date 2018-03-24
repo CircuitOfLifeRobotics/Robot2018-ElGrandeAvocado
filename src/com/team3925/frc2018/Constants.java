@@ -13,6 +13,7 @@ public class Constants {
 		public static final int SCALE_LOW = 54297;
 		public static final int SWITCH = 40000;
 		public static final int BOTTOM = 0;
+		public static final int DEPLOY_HEIGHT = 0; //TODO: Measure this
 	}
 	
 	public static class ArmSetpoints {

@@ -22,13 +22,13 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 
 	public static Drivetrain instance;
 	private static boolean shiftState = true;
-	private static final boolean isGyroInverted = false; 
+	private static final boolean isGyroInverted = false;
 
 	private double kP = 0.2;
 	private double kI = 0;
 	private double kD = 0;
 	private double kF = 0.9;
-	
+
 	private static final NeutralMode drivetrainNeutralMode = NeutralMode.Brake;
 
 	public static Drivetrain getInstance() {
@@ -41,7 +41,7 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 		RobotMap.DrivetrainMap.LEFT_MASTER.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_A.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setInverted(true);
-		
+
 		leftMaster.setSensorPhase(true);
 		rightMaster.setInverted(false);
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
@@ -56,18 +56,18 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 		rightMaster.config_kP(Constants.PID_ID_X, kP, Constants.TIMEOUT_MS);
 		rightMaster.config_kI(Constants.PID_ID_X, kI, Constants.TIMEOUT_MS);
 		rightMaster.config_kD(Constants.PID_ID_X, kD, Constants.TIMEOUT_MS);
-		
+
 		RobotMap.DrivetrainMap.LEFT_MASTER.setNeutralMode(drivetrainNeutralMode);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_A.setNeutralMode(drivetrainNeutralMode);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setNeutralMode(drivetrainNeutralMode);
-		
+
 		RobotMap.DrivetrainMap.LEFT_MASTER.configOpenloopRamp(0.2, Constants.TIMEOUT_MS);
 		RobotMap.DrivetrainMap.RIGHT_MASTER.configOpenloopRamp(0.2, Constants.TIMEOUT_MS);
-		
+
 		RobotMap.DrivetrainMap.RIGHT_MASTER.setNeutralMode(drivetrainNeutralMode);
 		RobotMap.DrivetrainMap.RIGHT_SLAVE_A.setNeutralMode(drivetrainNeutralMode);
 		RobotMap.DrivetrainMap.RIGHT_SLAVE_B.setNeutralMode(drivetrainNeutralMode);
-		
+
 		leftMaster.overrideLimitSwitchesEnable(false);
 		rightMaster.overrideLimitSwitchesEnable(false);
 	}
@@ -122,7 +122,7 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 		leftMaster.set(ControlMode.Velocity, l);
 		rightMaster.set(ControlMode.Velocity, r);
 	}
-	
+
 	public void setRamp(double ramp) {
 		leftMaster.configOpenloopRamp(ramp, Constants.TIMEOUT_MS);
 		rightMaster.configOpenloopRamp(ramp, Constants.TIMEOUT_MS);
@@ -136,6 +136,7 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 	protected void initDefaultCommand() {
 	}
 
+	// Get-er and set-er methods
 	@Override
 	public double getkP() {
 		return kP;

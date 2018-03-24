@@ -9,13 +9,13 @@ import com.team3925.utils.MotionProfileCommand;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class CenterSwitchAuto extends CommandGroup{
-	
+public class CenterSwitchAuto extends CommandGroup {
+
 	public CenterSwitchAuto(char side) {
 		addParallel(new SetSuperStructureState(ElevatorState.BOTTOM, ArmState.RETRACTED, IntakeState.HOLD));
 		if (side == 'L' || side == 'l') {
 			addSequential(new MotionProfileCommand("CENTER_LEFTSWITCH"));
-		}else if (side == 'R' || side == 'r'){
+		} else if (side == 'R' || side == 'r') {
 			addSequential(new MotionProfileCommand("CENTER_RIGHTSWITCH"));
 		}
 		addSequential(new WaitCommand(4));
@@ -23,4 +23,3 @@ public class CenterSwitchAuto extends CommandGroup{
 	}
 
 }
-

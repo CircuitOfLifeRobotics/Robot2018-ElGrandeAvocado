@@ -78,18 +78,14 @@ public class Arm extends Subsystem {
 		switch (state) {
 		case FORWARD_EXTENDED:
 			setSetpoint(Constants.ArmSetpoints.EXTENDED);
-			break;
 		case RETRACTED:
 			setSetpoint(Constants.ArmSetpoints.RETRACTED);
-			break;
 		case REVERSE_EXTENDED:
 			setSetpoint(Constants.ArmSetpoints.BACKWARDS);
-			break;
 		case SCALE_ANGLE:
 			setSetpoint(Constants.ArmSetpoints.SCALEASSIST);
-			break;
 		default:
-			break;
+			System.err.println("Failed to set " + state);
 		}
 	}
 	

@@ -1,9 +1,6 @@
 package com.team3925.frc2018.subsystems;
 
-import javax.swing.plaf.SplitPaneUI;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
@@ -62,17 +59,14 @@ public class Intake extends Subsystem {
 		case OPEN:
 			grabSolenoid.set(Value.kForward);
 			springSolenoid.set(Value.kForward);
-			break;
 		case INTAKE:
 			grabSolenoid.set(Value.kReverse);
 			springSolenoid.set(Value.kForward);
-			break;
 		case CLOSED:
 			grabSolenoid.set(Value.kReverse);
 			springSolenoid.set(Value.kForward);
-			break;
 		default:
-			break;
+			
 		}
 	}
 
