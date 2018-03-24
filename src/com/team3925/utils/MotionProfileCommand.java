@@ -51,18 +51,23 @@ public class MotionProfileCommand extends Command {
 		leftTra = modifier.getLeftTrajectory();
 		rightTra = modifier.getRightTrajectory();
 		requires(Drivetrain.getInstance());
-
 	}
 
 	public MotionProfileCommand(String fileName) {
-		leftTra = Pathfinder.readFromCSV(new File("/home/lvuser/autos/" + fileName + "_left_detailed.csv"));
-		rightTra = Pathfinder.readFromCSV(new File("/home/lvuser/autos/" + fileName + "_right_detailed.csv"));
+
+		ClassLoader classLoader = this.getClass().getClassLoader();
+
+		leftTra = Pathfinder.readFromCSV(
+				new File(classLoader.getResource("autos/" + fileName + "_left_detailed.csv").getFile()));
+		rightTra = Pathfinder.readFromCSV(
+				new File(classLoader.getResource("autos/" + fileName + "_right_detailed.csv").getFile()));
+		
 		requires(Drivetrain.getInstance());
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		
+
 		left = new GnarlyController(leftTra);
 		right = new GnarlyController(rightTra);
 		left.config((int) Drivetrain.getInstance().getLeftEncoderPosition(), ENC_TPR, WHEEL_DI, true,

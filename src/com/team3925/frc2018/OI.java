@@ -4,6 +4,7 @@ import com.team3925.frc2018.commands.DriveManual.DriveManualInput;
 import com.team3925.frc2018.commands.SetSuperStructureState;
 import com.team3925.frc2018.commands.ShiftHigh;
 import com.team3925.frc2018.commands.ShiftLow;
+import com.team3925.frc2018.commands.TuneElevator;
 import com.team3925.frc2018.subsystems.Arm.ArmState;
 import com.team3925.frc2018.subsystems.Elevator;
 import com.team3925.frc2018.subsystems.Elevator.ElevatorState;
@@ -108,22 +109,8 @@ public class OI implements DriveManualInput {
 		intakeCube.whenPressed(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.FORWARD_EXTENDED, IntakeState.INTAKE));
 		intakeCube.whenReleased(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.RETRACTED, IntakeState.HOLD));
 
-		tuneUp.whenActive(new Command() {
-			
-			@Override
-			protected boolean isFinished() {
-				Elevator.getInstance().incrementHeight();
-				return true;
-			}
-		});
-		tuneDown.whenActive(new Command() {
-			
-			@Override
-			protected boolean isFinished() {
-				Elevator.getInstance().decrementHeight();
-				return true;
-			}
-		});
+		tuneUp.whenActive(new TuneElevator(true));
+		tuneDown.whenActive(new TuneElevator(false));
 	}
 
 	@Override
