@@ -41,6 +41,7 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 		RobotMap.DrivetrainMap.LEFT_MASTER.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_A.setInverted(true);
 		RobotMap.DrivetrainMap.LEFT_SLAVE_B.setInverted(true);
+		RobotMap.DrivetrainMap.RIGHT_SLAVE_A.setInverted(true);
 
 		leftMaster.setSensorPhase(true);
 		rightMaster.setInverted(false);
@@ -78,7 +79,7 @@ public class Drivetrain extends Subsystem implements PIDTunable {
 	}
 
 	public void setShifter(boolean isHigh) {
-		shiftSolenoid.set((isHigh) ? Value.kForward : Value.kReverse);
+		shiftSolenoid.set((isHigh) ? Value.kReverse : Value.kForward);
 		shiftState = isHigh;
 	}
 

@@ -2,6 +2,7 @@ package com.team3925.frc2018.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
 
@@ -20,15 +21,16 @@ public class Intake extends Subsystem {
 	}
 
 	public static enum IntakeState {
-		INTAKE, SHOOT, DROP, HOLD, UNKNOWN;
+		INTAKE, SHOOT, DROP, HOLD, UNKNOWN, OPEN, CLOSED;
 	}
 
 	private final TalonSRX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
+//	private final VictorSPX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
 
-	private final TalonSRX rightIntake = RobotMap.IntakeMap.RIGHT_INTAKE;
+	private final VictorSPX rightIntake = RobotMap.IntakeMap.RIGHT_INTAKE;
 
 	private final DoubleSolenoid grabSolenoid = RobotMap.IntakeMap.GRAB_SOLENOID;
-	private final DoubleSolenoid springSolenoid = RobotMap.IntakeMap.GRAB_SOLENOID;
+//	private final DoubleSolenoid springSolenoid = RobotMap.IntakeMap.GRAB_SOLENOID;
 
 	private IntakeGrabberState grabState = IntakeGrabberState.UNKNOWN;
 	private IntakeRollerState rollState = IntakeRollerState.UNKNOWN;
@@ -43,7 +45,8 @@ public class Intake extends Subsystem {
 	}
 
 	private Intake() {
-		leftIntake.setInverted(true);
+		leftIntake.setInverted(false);
+		rightIntake.setInverted(true);
 	}
 
 	private void setIntakeRollers(double speed) {
@@ -55,19 +58,21 @@ public class Intake extends Subsystem {
 
 	private void setGrabberState(IntakeGrabberState state) {
 		this.grabState = state;
-//		switch (state) {
-//		case OPEN:
-//			grabSolenoid.set(Value.kForward);
+		switch (state) {
+		case OPEN:
+			grabSolenoid.set(Value.kReverse);
+			break;
 //			springSolenoid.set(Value.kForward);
-//		case INTAKE:
-//			grabSolenoid.set(Value.kReverse);
+		case INTAKE:
+			grabSolenoid.set(Value.kReverse);
+			break;
 //			springSolenoid.set(Value.kForward);
-//		case CLOSED:
-//			grabSolenoid.set(Value.kReverse);
+		case CLOSED:
+			grabSolenoid.set(Value.kForward);
+			break;
 //			springSolenoid.set(Value.kForward);
-//		default:
-//			
-//		}
+		}
+		
 	}
 
 	private void setRollerState(IntakeRollerState state) {
@@ -102,13 +107,19 @@ public class Intake extends Subsystem {
 			setRollerState(IntakeRollerState.HOLD);
 			break;
 		case INTAKE:
-			setGrabberState(IntakeGrabberState.OPEN);
+//			setGrabberState(IntakeGrabberState.OPEN);
 			setRollerState(IntakeRollerState.INTAKE);
 			break;
 		case SHOOT:
 			setGrabberState(IntakeGrabberState.CLOSED);
 			setRollerState(IntakeRollerState.SHOOT);
 			break;
+		case OPEN:
+			setGrabberState(IntakeGrabberState.OPEN);
+			setRollerState(IntakeRollerState.INTAKE);
+			break;
+		case CLOSED:
+			setGrabberState(IntakeGrabberState.CLOSED);
 		default:
 			break;
 		}

@@ -37,6 +37,7 @@ public class OI implements DriveManualInput {
 	private Trigger shootCube;
 	private Trigger shootBack;
 	private Button intakeCube;
+	private Button openGrabbers;
 
 	private Trigger tuneUp;
 	private Trigger tuneDown;
@@ -58,10 +59,11 @@ public class OI implements DriveManualInput {
 		jogElevatorScaleLow = new JoystickButton(xbox, 1);
 		jogElevatorSwitch = new JoystickButton(xbox, 3);
 		jogElevatorBottom = new JoystickButton(xbox, 10);
-
+		
 		drivetrain_Shift = new JoystickButton(wheel, 5);
 
 		intakeCube = new JoystickButton(xbox, 6);
+		openGrabbers = new JoystickButton(xbox, 5);
 
 		dropCube = new Trigger() {
 			@Override
@@ -95,10 +97,10 @@ public class OI implements DriveManualInput {
 
 		tuneDown = new Trigger() {
 			@Override
-			public boolean get() {
+			public boolean get() {			
 				return xbox.getRawAxis(2) > 0.7;
 			}
-		};
+		};																																																														
 
 
 		jogElevatorTop.whenPressed(new SetSuperStructureState(ElevatorState.TOP, ArmState.SCALE_ANGLE, IntakeState.HOLD));
@@ -111,14 +113,18 @@ public class OI implements DriveManualInput {
 		shootBack.whenActive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.REVERSE_EXTENDED, IntakeState.SHOOT));
 		shootBack.whenInactive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.RETRACTED, IntakeState.HOLD));
 		dropCube.whenActive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.DROP));
-		shootCube.whileActive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.SHOOT));
-		shootCube.whenInactive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.SHOOT));
+		dropCube.whenInactive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.RETRACTED, IntakeState.HOLD));
+		shootCube.whenActive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.SHOOT));
+		shootCube.whenInactive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.RETRACTED, IntakeState.HOLD));
 
 		drivetrain_Shift.whenPressed(new ShiftLow());
 		drivetrain_Shift.whenReleased(new ShiftHigh());
 
 		intakeCube.whenPressed(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.FORWARD_EXTENDED, IntakeState.INTAKE));
 		intakeCube.whenReleased(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.RETRACTED, IntakeState.HOLD));
+		
+		openGrabbers.whenPressed(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.OPEN));
+		openGrabbers.whenReleased(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.CLOSED));
 
 		tuneUp.whenActive(new TuneElevator(true));
 		tuneDown.whenActive(new TuneElevator(false));

@@ -19,7 +19,7 @@ public class DriveManual extends Command {
 	private double prelimLeft, prelimRight;
 	private double fwd, turn;
 	private double scale;
-	private static final double K_HEIGHT_SUBTRACTION = 0.8;
+	private static final double K_HEIGHT_SUBTRACTION = 0.6;
 
 	public DriveManual(DriveManualInput input) {
 		this.input = input;

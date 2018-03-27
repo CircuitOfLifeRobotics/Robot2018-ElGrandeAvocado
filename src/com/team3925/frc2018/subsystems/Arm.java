@@ -23,7 +23,7 @@ public class Arm extends Subsystem {
 	private static final int ACCELERATION = 1500; // 400
 	private static final int VELOCITY = 3000; //600
 	
-	private static final int SETPOINT_DEADZONE = 750;
+	private static final int SETPOINT_DEADZONE = 100;
 	
 	//*********************
 	
@@ -69,7 +69,7 @@ public class Arm extends Subsystem {
 	}
 	
 	public boolean isAtSetpoint() {
-		return (liftMotor.getSelectedSensorPosition(0) - currentSetpoint) < SETPOINT_DEADZONE;
+		return Math.abs(liftMotor.getSelectedSensorPosition(0) - currentSetpoint) < SETPOINT_DEADZONE;
 	}
 	
 	public void zero() {
@@ -77,7 +77,9 @@ public class Arm extends Subsystem {
 	}
 	
 	public void setSetpoint(ArmState state) {
-		Arm.state = state;
+		if(state != ArmState.UNKNOWN) {
+			Arm.state = state;
+		}
 		switch (state) {
 		case FORWARD_EXTENDED:
 			setSetpoint(Constants.ArmSetpoints.EXTENDED);

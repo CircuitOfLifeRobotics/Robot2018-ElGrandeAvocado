@@ -6,12 +6,11 @@ import com.team3925.frc2018.commands.ShiftHigh;
 import com.team3925.frc2018.commands.autos.CenterSwitchAuto;
 import com.team3925.frc2018.commands.autos.DriveForwardAuto;
 import com.team3925.frc2018.subsystems.Arm;
-import com.team3925.frc2018.subsystems.Drivetrain;
 import com.team3925.frc2018.subsystems.Arm.ArmState;
+import com.team3925.frc2018.subsystems.Drivetrain;
 import com.team3925.frc2018.subsystems.Elevator;
 import com.team3925.frc2018.subsystems.Elevator.ElevatorState;
 import com.team3925.frc2018.subsystems.Intake.IntakeState;
-import com.team3925.frc2018.subsystems.Intake;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -38,6 +37,7 @@ public class Robot extends IterativeRobot {
 		camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(320, 240);
 		camera.setFPS(12);
+		
 		
 		//Autonomous Selector:
 		autoSelector = new SendableChooser<String>();
@@ -80,12 +80,53 @@ public class Robot extends IterativeRobot {
 			new SetSuperStructureState(ElevatorState.BOTTOM, ArmState.RETRACTED, IntakeState.HOLD).start();
 		}
 		isElevatorZeroed = false;
+		Drivetrain.getInstance();
 		drive.start();
 	}
 	
 	@Override
 	public void teleopPeriodic() {
-		System.out.println(Elevator.getInstance().getMaster().getSelectedSensorVelocity(0));
+//		if (Timer.getFPGATimestamp() < 10) {//back
+//			RobotMap.DrivetrainMap.LEFT_MASTER.set(1);
+//			RobotMap.DrivetrainMap.LEFT_SLAVE_A.set(0);
+//			RobotMap.DrivetrainMap.LEFT_SLAVE_B.set(0);
+//			
+//			RobotMap.DrivetrainMap.RIGHT_MASTER.set(1);
+//			RobotMap.DrivetrainMap.RIGHT_SLAVE_A.set(0);
+//			RobotMap.DrivetrainMap.RIGHT_SLAVE_B.set(0);
+//		}
+//		
+//		if (Timer.getFPGATimestamp() > 10 && Timer.getFPGATimestamp() < 20) {//forward
+//			System.out.println("A\'s");
+//			RobotMap.DrivetrainMap.LEFT_MASTER.set(0);
+//			RobotMap.DrivetrainMap.LEFT_SLAVE_A.set(1);
+//			RobotMap.DrivetrainMap.LEFT_SLAVE_B.set(0);
+//			
+//			RobotMap.DrivetrainMap.RIGHT_MASTER.set(0);
+//			RobotMap.DrivetrainMap.RIGHT_SLAVE_A.set(1);
+//			RobotMap.DrivetrainMap.RIGHT_SLAVE_B.set(0);
+//		}
+//		if (Timer.getFPGATimestamp() > 20 && Timer.getFPGATimestamp() < 30) {//
+//			System.out.println("B\'s");
+//			RobotMap.DrivetrainMap.LEFT_MASTER.set(0);
+//			RobotMap.DrivetrainMap.LEFT_SLAVE_A.set(0);
+//			RobotMap.DrivetrainMap.LEFT_SLAVE_B.set(1);
+//			
+//			RobotMap.DrivetrainMap.RIGHT_MASTER.set(0);
+//			RobotMap.DrivetrainMap.RIGHT_SLAVE_A.set(0);
+//			RobotMap.DrivetrainMap.RIGHT_SLAVE_B.set(1);
+//		}
+//		if (Timer.getFPGATimestamp() > 30) {
+//			System.out.println("All done");
+//			RobotMap.DrivetrainMap.LEFT_MASTER.set(0);
+//			RobotMap.DrivetrainMap.LEFT_SLAVE_A.set(0);
+//			RobotMap.DrivetrainMap.LEFT_SLAVE_B.set(0);
+//			
+//			RobotMap.DrivetrainMap.RIGHT_MASTER.set(0);
+//			RobotMap.DrivetrainMap.RIGHT_SLAVE_A.set(0);
+//			RobotMap.DrivetrainMap.RIGHT_SLAVE_B.set(0);
+//		}
+		Elevator.getInstance().log();
 	}
 	
 	@Override

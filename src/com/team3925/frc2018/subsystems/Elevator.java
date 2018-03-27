@@ -1,5 +1,6 @@
 package com.team3925.frc2018.subsystems;
 
+import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -25,12 +26,12 @@ public class Elevator extends Subsystem {
 	private static final double kD = 0;
 	private static final double kF = 0.35;
 
-	private static final int MOTION_MAGIC_ACCELERATION = 7000;
-	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 9000;
+	private static final int MOTION_MAGIC_ACCELERATION = 7000; //7000
+	private static final int MOTION_MAGIC_CRUISE_VELOCITY = 9000; //9000
 
 	private static final double MAX_SCALE_HEIGHT = 71805;
 	
-	private static final double TELEOP_ELEVATOR_INCREMENT = 8;
+	private static final double TELEOP_ELEVATOR_INCREMENT = 12000;
 	
 	private static final double SETPOINT_DEADZONE = 4096;
 	//*****************
@@ -92,7 +93,8 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setPosition(ElevatorState state) {
-		Elevator.state = state;
+		if (state != ElevatorState.UNKNOWN)
+			Elevator.state = state;
 		switch (state) {
 		case TOP:
 			setPosition(MAX_SCALE_HEIGHT);
@@ -170,6 +172,13 @@ public class Elevator extends Subsystem {
 
 	public void zero() {
 		elevatorMaster.setSelectedSensorPosition(0, Constants.PID_ID_X, Constants.TIMEOUT_MS);
+	}
+	
+	public void log() {
+		SmartDashboard.putNumber("Elevator Velocity", elevatorMaster.getSelectedSensorVelocity(0));
+		SmartDashboard.putNumber("Elevator Position", elevatorMaster.getSelectedSensorPosition(0));	
+		SmartDashboard.putNumber("Elevator Velocity Setpoint", elevatorMaster.getActiveTrajectoryVelocity());
+		SmartDashboard.putNumber("Elevator Position Setpoint", elevatorMaster.getActiveTrajectoryPosition());
 	}
 
 	@Override

@@ -35,8 +35,9 @@ public class RobotMap {
 	}
 
 	public static final class IntakeMap {
+//		public static final WPI_TalonSRX LEFT_INTAKE = CTREControllerFactory.createDefaultTalon(11);
+		public static final WPI_VictorSPX RIGHT_INTAKE = CTREControllerFactory.createDefaultVictor(12);
 		public static final WPI_TalonSRX LEFT_INTAKE = CTREControllerFactory.createDefaultTalon(11);
-		public static final WPI_TalonSRX RIGHT_INTAKE = CTREControllerFactory.createDefaultTalon(12);
 
 		public static final WPI_TalonSRX LIFT_MOTOR = CTREControllerFactory.createDefaultTalon(13);
 

@@ -38,18 +38,26 @@ public class SetSuperStructureState extends Command {
 		armDone = false;
 		intakeDone = false;
 		System.out.println("Started");
+
+		if (!(armState == ArmState.REVERSE_EXTENDED || Arm.getInstance().getState() == ArmState.SCALE_ANGLE)
+				&& (intakeState == IntakeState.DROP || intakeState == IntakeState.SHOOT)) {
+			armState = ArmState.FORWARD_EXTENDED;
+		}
 	}
 
 	@Override
 	protected void execute() {
+
 		if (Elevator.getInstance().positionAtState(elevatorState) <= Constants.ElevatorSetpoints.DEPLOY_HEIGHT) {
 			if (Arm.getInstance().safeToGoDown()) {
 				Elevator.getInstance().setPosition(elevatorState);
 				elevatorDone = true;
 			}
-		}else {
+		} else {
 			Elevator.getInstance().setPosition(elevatorState);
 		}
+
+
 		if (armState == ArmState.REVERSE_EXTENDED) {
 			if (Elevator.getInstance().safeToDeployBackwards()) {
 				Arm.getInstance().setSetpoint(armState);
@@ -80,7 +88,7 @@ public class SetSuperStructureState extends Command {
 	protected boolean isFinished() {
 		return (armDone && intakeDone && elevatorDone);
 	}
-	
+
 	@Override
 	protected void end() {
 		System.out.println("Finished");
