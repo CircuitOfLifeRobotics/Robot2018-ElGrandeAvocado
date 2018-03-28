@@ -10,6 +10,7 @@ import com.team3925.frc2018.subsystems.Arm.ArmState;
 import com.team3925.frc2018.subsystems.Drivetrain;
 import com.team3925.frc2018.subsystems.Elevator;
 import com.team3925.frc2018.subsystems.Elevator.ElevatorState;
+import com.team3925.frc2018.subsystems.Intake;
 import com.team3925.frc2018.subsystems.Intake.IntakeState;
 
 import edu.wpi.cscore.UsbCamera;
@@ -47,6 +48,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto", autoSelector);
 		
 		isElevatorZeroed = false;
+		
 	}
 
 	@Override
@@ -126,7 +128,11 @@ public class Robot extends IterativeRobot {
 //			RobotMap.DrivetrainMap.RIGHT_SLAVE_A.set(0);
 //			RobotMap.DrivetrainMap.RIGHT_SLAVE_B.set(0);
 //		}
+		Arm.getInstance().log();
 		Elevator.getInstance().log();
+		SmartDashboard.putString("Elevator State", Elevator.getInstance().getState().toString());
+		SmartDashboard.putString("Intake State", Intake.getInstance().getState().toString());
+		SmartDashboard.putString("Arm State", Arm.getInstance().getState().toString());
 	}
 	
 	@Override

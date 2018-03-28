@@ -7,6 +7,7 @@ import com.team3925.frc2018.Constants;
 import com.team3925.frc2018.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm extends Subsystem {
 
@@ -27,7 +28,7 @@ public class Arm extends Subsystem {
 	
 	//*********************
 	
-	private static ArmState state = ArmState.UNKNOWN;
+	private ArmState state = ArmState.UNKNOWN;
 
 	private final TalonSRX liftMotor = RobotMap.IntakeMap.LIFT_MOTOR;
 	
@@ -74,28 +75,33 @@ public class Arm extends Subsystem {
 	
 	public void zero() {
 		liftMotor.setSelectedSensorPosition(0, Constants.PID_ID_X, Constants.TIMEOUT_MS);
+		System.out.println("zeroARM");
 	}
 	
 	public void setSetpoint(ArmState state) {
 		if(state != ArmState.UNKNOWN) {
-			Arm.state = state;
+			switch (state) {
+			case FORWARD_EXTENDED:
+				setSetpoint(Constants.ArmSetpoints.EXTENDED);
+				break;
+			case RETRACTED:
+				setSetpoint(Constants.ArmSetpoints.RETRACTED);
+				break;
+			case REVERSE_EXTENDED:
+				setSetpoint(Constants.ArmSetpoints.BACKWARDS);
+				break;
+			case SCALE_ANGLE:
+				setSetpoint(Constants.ArmSetpoints.SCALEASSIST);
+				break;
+			default:
+				System.err.println("Failed to set " + state);
+				break;
+			}
 		}
-		switch (state) {
-		case FORWARD_EXTENDED:
-			setSetpoint(Constants.ArmSetpoints.EXTENDED);
-			break;
-		case RETRACTED:
-			setSetpoint(Constants.ArmSetpoints.RETRACTED);
-			break;
-		case REVERSE_EXTENDED:
-			setSetpoint(Constants.ArmSetpoints.BACKWARDS);
-			break;
-		case SCALE_ANGLE:
-			setSetpoint(Constants.ArmSetpoints.SCALEASSIST);
-			break;
-		default:
-			System.err.println("Failed to set " + state);
-		}
+	}
+	
+	public void setState(ArmState state) {
+		this.state = state;
 	}
 	
 	public double positionAtState(ArmState state) {
@@ -132,6 +138,11 @@ public class Arm extends Subsystem {
 	
 	@Override
 	protected void initDefaultCommand() {
+	}
+	
+	public void log() {
+//		System.out.println(state + ", " + liftMotor.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("ArmPosition", liftMotor.getSelectedSensorPosition(0));
 	}
 
 }

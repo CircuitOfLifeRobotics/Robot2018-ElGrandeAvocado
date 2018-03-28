@@ -36,6 +36,7 @@ public class OI implements DriveManualInput {
 	private Trigger dropCube;
 	private Trigger shootCube;
 	private Trigger shootBack;
+	private Trigger switchShot;
 	private Button intakeCube;
 	private Button openGrabbers;
 
@@ -100,7 +101,15 @@ public class OI implements DriveManualInput {
 			public boolean get() {			
 				return xbox.getRawAxis(2) > 0.7;
 			}
-		};																																																														
+		};		
+		
+		switchShot = new Trigger() {
+			
+			@Override
+			public boolean get() {
+				return xbox.getPOV() == 270;
+			}
+		};
 
 
 		jogElevatorTop.whenPressed(new SetSuperStructureState(ElevatorState.TOP, ArmState.SCALE_ANGLE, IntakeState.HOLD));
@@ -125,6 +134,9 @@ public class OI implements DriveManualInput {
 		
 		openGrabbers.whenPressed(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.OPEN));
 		openGrabbers.whenReleased(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.UNKNOWN, IntakeState.CLOSED));
+		
+		switchShot.whenActive(new SetSuperStructureState(ElevatorState.BOTTOM, ArmState.RETRACTED, IntakeState.ROLL_OUT));
+		switchShot.whenInactive(new SetSuperStructureState(ElevatorState.UNKNOWN, ArmState.RETRACTED, IntakeState.HOLD ));
 
 		tuneUp.whenActive(new TuneElevator(true));
 		tuneDown.whenActive(new TuneElevator(false));

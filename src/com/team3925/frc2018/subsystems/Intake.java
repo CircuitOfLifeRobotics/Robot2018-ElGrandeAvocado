@@ -17,20 +17,21 @@ public class Intake extends Subsystem {
 	}
 
 	public static enum IntakeRollerState {
-		INTAKE, SHOOT, DROP, HOLD, UNKNOWN;
+		INTAKE, SHOOT, DROP, HOLD, UNKNOWN, ROLL_OUT;
 	}
 
 	public static enum IntakeState {
-		INTAKE, SHOOT, DROP, HOLD, UNKNOWN, OPEN, CLOSED;
+		INTAKE, SHOOT, DROP, HOLD, UNKNOWN, OPEN, CLOSED, ROLL_OUT;
 	}
 
 	private final TalonSRX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
-//	private final VictorSPX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
+	// private final VictorSPX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
 
 	private final VictorSPX rightIntake = RobotMap.IntakeMap.RIGHT_INTAKE;
 
 	private final DoubleSolenoid grabSolenoid = RobotMap.IntakeMap.GRAB_SOLENOID;
-//	private final DoubleSolenoid springSolenoid = RobotMap.IntakeMap.GRAB_SOLENOID;
+	// private final DoubleSolenoid springSolenoid =
+	// RobotMap.IntakeMap.GRAB_SOLENOID;
 
 	private IntakeGrabberState grabState = IntakeGrabberState.UNKNOWN;
 	private IntakeRollerState rollState = IntakeRollerState.UNKNOWN;
@@ -62,17 +63,17 @@ public class Intake extends Subsystem {
 		case OPEN:
 			grabSolenoid.set(Value.kReverse);
 			break;
-//			springSolenoid.set(Value.kForward);
+		// springSolenoid.set(Value.kForward);
 		case INTAKE:
 			grabSolenoid.set(Value.kReverse);
 			break;
-//			springSolenoid.set(Value.kForward);
+		// springSolenoid.set(Value.kForward);
 		case CLOSED:
 			grabSolenoid.set(Value.kForward);
 			break;
-//			springSolenoid.set(Value.kForward);
+		// springSolenoid.set(Value.kForward);
 		}
-		
+
 	}
 
 	private void setRollerState(IntakeRollerState state) {
@@ -96,41 +97,50 @@ public class Intake extends Subsystem {
 	}
 
 	public void setState(IntakeState state) {
-		this.state = state;
-		switch (state) {
-		case DROP:
-			setGrabberState(IntakeGrabberState.OPEN);
-			setRollerState(IntakeRollerState.DROP);
-			break;
-		case HOLD:
-			setGrabberState(IntakeGrabberState.CLOSED);
-			setRollerState(IntakeRollerState.HOLD);
-			break;
-		case INTAKE:
-//			setGrabberState(IntakeGrabberState.OPEN);
-			setRollerState(IntakeRollerState.INTAKE);
-			break;
-		case SHOOT:
-			setGrabberState(IntakeGrabberState.CLOSED);
-			setRollerState(IntakeRollerState.SHOOT);
-			break;
-		case OPEN:
-			setGrabberState(IntakeGrabberState.OPEN);
-			setRollerState(IntakeRollerState.INTAKE);
-			break;
-		case CLOSED:
-			setGrabberState(IntakeGrabberState.CLOSED);
-		default:
-			break;
+		if (state != IntakeState.UNKNOWN) {
+			switch (state) {
+			case DROP:
+				setGrabberState(IntakeGrabberState.OPEN);
+				setRollerState(IntakeRollerState.DROP);
+				break;
+			case HOLD:
+				setGrabberState(IntakeGrabberState.CLOSED);
+				setRollerState(IntakeRollerState.HOLD);
+				break;
+			case INTAKE:
+				// setGrabberState(IntakeGrabberState.OPEN);
+				setRollerState(IntakeRollerState.INTAKE);
+				break;
+			case SHOOT:
+				setGrabberState(IntakeGrabberState.CLOSED);
+				setRollerState(IntakeRollerState.SHOOT);
+				break;
+			case OPEN:
+				setGrabberState(IntakeGrabberState.OPEN);
+				setRollerState(IntakeRollerState.INTAKE);
+				break;
+			case CLOSED:
+				setGrabberState(IntakeGrabberState.CLOSED);
+			case ROLL_OUT:
+				setRollerState(IntakeRollerState.SHOOT);
+			default:
+				break;
+			}
 		}
 	}
 	
+	public void changeState(IntakeState state) {
+		this.state = state;
+	}
+
 	public IntakeGrabberState getGrabberState() {
 		return this.grabState;
 	}
+
 	public IntakeRollerState getRollerState() {
 		return this.rollState;
 	}
+
 	public IntakeState getState() {
 		return this.state;
 	}

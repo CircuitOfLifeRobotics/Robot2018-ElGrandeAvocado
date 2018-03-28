@@ -27,6 +27,6 @@ public class Constants {
 		public static final double HOLD_PWR = 0.25;
 		public static final double SHOOT_PWR = -1;
 		public static final double DROP_PWR = -0.5;
-		public static final double INTAKE_PWR = 1;
+		public static final double INTAKE_PWR = 0.7;
 	}
 }
