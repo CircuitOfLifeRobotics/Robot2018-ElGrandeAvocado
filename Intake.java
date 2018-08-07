@@ -1,10 +1,10 @@
-package com.team3926.frc2018.subsystems;
+package com.team3925.frc2018.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.team3926.frc2018.Constants;
-import com.team3926.frc2018.RobotMap;
+import com.team3925.frc2018.Constants;
+import com.team3925.frc2018.RobotMap;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
