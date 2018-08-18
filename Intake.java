@@ -8,6 +8,7 @@ import com.team3925.frc2018.RobotMap;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake extends Subsystem {
@@ -27,10 +28,10 @@ public class Intake extends Subsystem {
 	private final TalonSRX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
 	// private final VictorSPX leftIntake = RobotMap.IntakeMap.LEFT_INTAKE;
 
-	private final TalonSRX rightIntake = RobotMap.IntakeMap.RIGHT_INTAKE;
+	private final VictorSPX rightIntake = RobotMap.IntakeMap.RIGHT_INTAKE;
 
 	private final DoubleSolenoid grabSolenoid = RobotMap.IntakeMap.GRAB_SOLENOID;
-	private final DoubleSolenoid springSolenoid = RobotMap.IntakeMap.SPRING_SOLENOID;
+	 private final DoubleSolenoid springSolenoid = RobotMap.IntakeMap. SPRING_SOLENOID;
 
 	private IntakeGrabberState grabState = IntakeGrabberState.UNKNOWN;
 	private IntakeRollerState rollState = IntakeRollerState.UNKNOWN;
@@ -62,17 +63,17 @@ public class Intake extends Subsystem {
 		case OPEN:
 			grabSolenoid.set(Value.kForward);
 			springSolenoid.set(Value.kForward);
+
 			break;
 		// springSolenoid.set(Value.kForward);
 		case INTAKE:
-			grabSolenoid.set(Value.kReverse);
-			springSolenoid.set(Value.kOff);
+			grabSolenoid.set(Value.kOff);
+			springSolenoid.set(Value.kForward);
 			break;
 		// springSolenoid.set(Value.kForward);
 		case CLOSED:
 			grabSolenoid.set(Value.kReverse);
-			springSolenoid.set(Value.kReverse);
-			break;
+			springSolenoid.set(Value.kReverse);			break;
 		// springSolenoid.set(Value.kForward);
 		}
 
@@ -123,16 +124,14 @@ public class Intake extends Subsystem {
 				break;
 			case CLOSED:
 				setGrabberState(IntakeGrabberState.CLOSED);
-				break;
 			case ROLL_OUT:
 				setRollerState(IntakeRollerState.SHOOT);
-				break;
 			default:
 				break;
 			}
 		}
 	}
-
+	
 	public void changeState(IntakeState state) {
 		this.state = state;
 	}
