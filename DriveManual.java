@@ -1,7 +1,6 @@
 package com.team3925.frc2018.commands;
 
 import com.team3925.frc2018.subsystems.Drivetrain;
-import com.team3925.frc2018.subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -14,12 +13,10 @@ public class DriveManual extends Command {
 	}
 
 	private final boolean doReverseWhenReversing;
-
 	private DriveManualInput input;
 	private double prelimLeft, prelimRight;
 	private double fwd, turn;
 	private double scale;
-	private static final double K_HEIGHT_SUBTRACTION = 0.6;
 
 	public DriveManual(DriveManualInput input) {
 		this.input = input;
@@ -47,10 +44,7 @@ public class DriveManual extends Command {
 			prelimLeft *= scale;
 			prelimRight *= scale;
 		}
-
-		Drivetrain.getInstance().setRaw(
-				prelimLeft * (1 - (Elevator.getInstance().getElevatorHeightPercentage() * K_HEIGHT_SUBTRACTION)),
-				prelimRight * (1 - (Elevator.getInstance().getElevatorHeightPercentage() * K_HEIGHT_SUBTRACTION)));
+		Drivetrain.getInstance().setRaw(prelimLeft, prelimRight);
 	}
 
 	@Override
